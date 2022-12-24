@@ -1,0 +1,303 @@
+[
+  {
+    "Id": 46,
+    "Name": "A spike",
+    "Category": "Etc"
+  },
+  {
+    "Id": 36,
+    "Name": "Ant",
+    "Category": "3DW"
+  },
+  {
+    "Id": 1,
+    "Name": "Beetle",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 4,
+    "Name": "Blooper",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 20,
+    "Name": "Bomb",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 7,
+    "Name": "Chain Chomp",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 5,
+    "Name": "Fish",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 18,
+    "Name": "Fish Bones",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 19,
+    "Name": "Dry Bones",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 13,
+    "Name": "Boo",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 45,
+    "Name": "Goomba",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 8,
+    "Name": "Hammer Bro",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 47,
+    "Name": "Fire Bro",
+    "Category": "3DW"
+  },
+  {
+    "Id": 44,
+    "Name": "Koopa",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 17,
+    "Name": "Lava Bubble",
+    "Category": "Etc"
+  },
+  {
+    "Id": 16,
+    "Name": "Magikoopa",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 10,
+    "Name": "Mole",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 12,
+    "Name": "Muncher",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 48,
+    "Name": "Piranha",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 15,
+    "Name": "Pokey",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 6,
+    "Name": "Spike (Enemy)",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 9,
+    "Name": "Wrench",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 2,
+    "Name": "Spike Top",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 3,
+    "Name": "Spiny",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 11,
+    "Name": "Thwomp",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 14,
+    "Name": "Wiggler",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 21,
+    "Name": "Bowser",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 22,
+    "Name": "Bowser Jr.",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 31,
+    "Name": "Bullet Bill",
+    "Category": "Gizmo"
+  },
+  {
+    "Id": 27,
+    "Name": "Boom Boom",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 29,
+    "Name": "Burner",
+    "Category": "Gizmo"
+  },
+  {
+    "Id": 30,
+    "Name": "Cannon",
+    "Category": "Gizmo"
+  },
+  {
+    "Id": 42,
+    "Name": "Charvaargh",
+    "Category": "3DW"
+  },
+  {
+    "Id": 40,
+    "Name": "Creeper",
+    "Category": "3DW"
+  },
+  {
+    "Id": 49,
+    "Name": "Fire Ball",
+    "Category": "Etc"
+  },
+  {
+    "Id": 35,
+    "Name": "Fire Bar",
+    "Category": "Gizmo"
+  },
+  {
+    "Id": 34,
+    "Name": "Grinder",
+    "Category": "Gizmo"
+  },
+  {
+    "Id": 39,
+    "Name": "Hop-Chop",
+    "Category": "3DW"
+  },
+  {
+    "Id": 32,
+    "Name": "Icicle",
+    "Category": "Gizmo"
+  },
+  {
+    "Id": 41,
+    "Name": "Koopa Car",
+    "Category": "3DW"
+  },
+  {
+    "Id": 28,
+    "Name": "Koopa Kid",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 50,
+    "Name": "Lava",
+    "Category": "Etc"
+  },
+  {
+    "Id": 24,
+    "Name": "Lakitu",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 25,
+    "Name": "Angry Sun",
+    "Category": "Etc"
+  },
+  {
+    "Id": 26,
+    "Name": "Mechakoopa",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 52,
+    "Name": "Pit",
+    "Category": "Etc"
+  },
+  {
+    "Id": 43,
+    "Name": "Porcupuffer",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 33,
+    "Name": "Skewer",
+    "Category": "Gizmo"
+  },
+  {
+    "Id": 38,
+    "Name": "Skipsqueak",
+    "Category": "3DW"
+  },
+  {
+    "Id": 37,
+    "Name": "Stingbee",
+    "Category": "3DW"
+  },
+  {
+    "Id": 53,
+    "Name": "Squished",
+    "Category": "Etc"
+  },
+  {
+    "Id": 54,
+    "Name": "Timer",
+    "Category": "Etc"
+  },
+  {
+    "Id": 55,
+    "Name": "Key Death",
+    "Category": "Etc"
+  },
+  {
+    "Id": 56,
+    "Name": "Phanto",
+    "Category": "Etc"
+  },
+  {
+    "Id": 57,
+    "Name": "Softlock",
+    "Category": "Etc"
+  },
+  {
+    "Id": 58,
+    "Name": "Kaizo Block",
+    "Category": "Etc"
+  },
+  {
+    "Id": 59,
+    "Name": "Poison Mushroom",
+    "Category": "Gizmo"
+  },
+  {
+    "Id": 60,
+    "Name": "Yoshi",
+    "Category": "Etc"
+  },
+  {
+    "Id": 61,
+    "Name": "Jumping aginst ClearCondition",
+    "Category": "Etc"
+  },
+  {
+    "Id": 62,
+    "Name": "Spikeball",
+    "Category": "Gizmo"
+  }
+
+]

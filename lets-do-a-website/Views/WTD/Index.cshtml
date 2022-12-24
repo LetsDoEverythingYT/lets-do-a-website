@@ -1,0 +1,80 @@
+﻿@using lets_do_a_website.Data.Entities
+@{ViewData["Title"] = "50 Ways to Die";}
+<br />
+Shoutout to <a href="https://www.twitch.tv/cliffy">Cliffy</a> for the idea from maker 1. I Kept the basic concept & added some deaths. Not many rule differences.
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-7">
+            <div class="row">
+                <div class="col-4">
+                    <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="WTD" asp-action="Tracker" asp-route-id="@User.Identity!.Name!">Track your solo run</a>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-outline-dark btn-lg btn-block btn-secondary">Mod a run</a>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="btn btn-outline-dark btn-lg btn-block btn-secondary" asp-controller="WTD" asp-action="Index">Create a match (Not yet implemented)</div>
+            <br />
+            <br />
+
+
+            <a class="btn btn-outline-dark btn-lg btn-block btn-secondary" asp-controller="WTD" asp-action="Hyduron">Hyduron's race (Not yet implemented)</a>
+        <br />
+        <br />
+
+
+            <a class="btn btn-outline-dark btn-lg btn-block btn-secondary">25 Ways To Die (Not yet implemented)</a>
+        <br /><br />
+        </div>
+
+        <div id="Modbox" class="col-5">
+            @*
+            send new auth request for moderation:read scope, gets streamer's mods.
+            Store list as keyed to streamer. Allow manual adds after list created
+
+            On mod access view, On id=cookieid check, if fail then do secondary check against modsfor(id)=cookieid, if pass then grant page
+            if fail, pass id &Aacute; fail status into view, at top of tracker page display "You tried to access id's tracker. they have to grant you access to that frist'"
+            make sure page is referencing tracker IDs everywhere, not cookieid (do a global review actually)
+            https://dev.twitch.tv/docs/authentication/scopes
+            https://dev.twitch.tv/docs/api/reference#get-moderators*@
+
+            <div id="o1" class="col-6">
+                <div>Allow your mods to update your tracker</div>
+                <div class="btn-group" role="group" aria-label="Allow Mod Access">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="btnradio1">Off</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio2">On</label>
+                </div>
+                <br />
+                <div>Allow specific users:</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" value="" id="add-user">
+                    <button class="btn btn-outline-dark btn-secondary" type="button" title="Add">Add</button>
+                </div>
+
+
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Currently allowed
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>This doesn't work yet</li>
+                        <li>Obviously</li>
+                        <li>But it will look similar</li>
+                        <li>thoughts?</li>
+                    </ul>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+

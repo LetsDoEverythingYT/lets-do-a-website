@@ -1,0 +1,44 @@
+﻿@using lets_do_a_website.Data;
+@using lets_do_a_website.Data.Entities;
+
+@model ITrackerData
+
+This page is so I can look at the memory useage of the website. It's very advanced stuff. Don't look at it it's not for you
+
+<br />
+
+
+
+Active trackers:
+@{
+    IEnumerable<Tracker> trackers = Model.GetAll();
+}
+
+
+<div class="container">
+
+@foreach (var t in trackers)
+{
+    var deaths = "";
+    var deathCount = 0;
+    @foreach(var d in t.DeathWays!.Values)
+    {
+        if(d.Active)
+        {
+            deaths += "1";
+        } 
+        else
+        {
+            deaths += "0";
+            deathCount++;
+        }
+
+    }
+    <div class="row">
+        <div class="col-2">@t.Id</div>
+        <div class ="col-2">@t.LastUsed</div>
+        <div class ="col-1">@deathCount</div>
+        <div class ="col">@deaths</div>
+    </div>
+}
+</div>

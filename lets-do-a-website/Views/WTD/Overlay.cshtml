@@ -1,0 +1,64 @@
+﻿@using lets_do_a_website.Data.Entities;
+@model Tracker
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+
+
+
+<div id="divvydivdiv" class="container-fluid">
+<div id="countycountcount" class="h1 d-inline">0</div>
+@foreach (var d in Model.DeathWays!.Values.Where(x=> x.Active==true))
+{
+    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" />
+}
+
+</div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+
+        
+        const conn = initializeSignalRConnection("@Model.Id");
+        var deaths = @Model.DeathWays.Values.Where(x=> x.Active==false).Count();
+        recalc();
+
+
+        conn.on("ReceiveNewDeath", ({ trackerId, deathId, deathCount }) => {
+            
+            document.getElementById("img-"+deathId).remove();
+            deaths = deaths +1;
+            recalc();
+        });
+
+
+        conn.on("ReceiveUndo", ({ trackerId, deathId, deathCount }) => {
+            var i = new Image();
+            i.id="img-" + deathId;
+            i.src = "/img/50wtd/" + deathId + ".png";
+            document.getElementById("divvydivdiv").appendChild(i);
+            deaths = deaths -1;
+            recalc();
+        });
+
+        conn.on("ForceRefresh", () => {
+            location.reload();
+        });
+
+        function recalc() {
+            //var remaining = document.getElementById("divvydivdiv").getElementsByTagName("img").length
+            document.getElementById("countycountcount").innerText = "" + deaths;
+        }
+
+
+</script>
+</body>
+</html>

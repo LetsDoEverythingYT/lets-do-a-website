@@ -1,0 +1,204 @@
+﻿@using lets_do_a_website.Data.Entities;
+@model Tracker
+@{ViewData["Title"] = "50 Ways to Die";}
+
+<div class="container navbar navbar-expand-sm">
+    <div class="navbar-brand">You have died</div>
+    <div class="navbar-brand" id="deathCount"></div>
+    <div class="navbar-brand">/ 50 ways</div>
+    <div class="navbar-brand" id="encourage"></div>
+</div>
+
+<br />
+
+<div id="Clicksters" class="container gap-2">
+    <div class="bg-light">
+
+            <div >Enemies</div>
+
+            @foreach (var d in Model.DeathWays!.Values)
+            {
+                var cl = "deathPic2";
+                if (d.Active) cl="deathPic";
+                if (d.Category != "Enemy") continue;
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name">
+            }
+    </div>
+    <br />
+    <div class="bg-light">
+        <div >3DW</div>
+            @foreach (var d in Model.DeathWays.Values)
+            {
+                var cl = "deathPic2";
+                if (d.Active) cl="deathPic";
+                if (d.Category != "3DW") continue;
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" alt="@d.Name">
+            }
+    </div>
+    <br />
+    <div class="bg-light">
+        <div>Gizmo</div>
+            @foreach (var d in Model.DeathWays.Values)
+            {
+                var cl = "deathPic2";
+                if (d.Active) cl="deathPic";
+                if (d.Category != "Gizmo") continue;
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" alt="@d.Name">
+            }
+    </div>
+    <br />
+    <div class="bg-light">
+           <div >Etc</div>
+            @foreach (var d in Model.DeathWays.Values)
+            {
+                var cl = "deathPic2";
+                if (d.Active) cl="deathPic";
+                @if (d.Category != "Etc") continue;
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" alt="@d.Name">
+
+            }
+    </div>
+</div>
+
+
+
+<br />
+<br />
+<br />
+<a id="reset" class="btn btn-danger" asp-action="Reset">RESET Run</a>
+<a id="reset" class="btn btn-danger" onclick="sendRefresh()">REFRESH OVERLAY</a>
+
+<br />
+<br />
+@{
+    var overlay1 = Url.Action("Overlay","WTD", new { id = Model.Id},"https");
+}
+Overlay options:
+<br />
+
+<div id="page-bottom-stuff" class="container">
+<div class="row">
+<div id="Overlays" class="col-5">
+
+Standard horizontal overlay
+<div class="input-group">
+    <input type="text" class="form-control" value="@overlay1" id="overlay-1">
+    <button class="btn btn-outline-dark" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(1)">Copy</button>
+    <a class="btn btn-outline-dark btn-lg " asp-action="Overlay" asp-route-id="@Model.Id">Go</a>
+</div>
+<br />
+
+Vertical side-panel overlay
+<div class="input-group">
+    <input type="text" class="form-control" value="@overlay1" id="copy-input">
+    <button class="btn btn-outline-dark  btn-secondary" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(2)">Copy</button>
+    <a class="btn btn-outline-dark btn-lg  btn-secondary" asp-action="Overlay" asp-route-id="@Model.Id">Go</a>
+</div>
+<br />
+
+Monopoly style overlay
+<div class="input-group">
+    <input type="text" class="form-control" value="@overlay1" id="copy-input">
+    <button class="btn btn-outline-dark btn-secondary" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(3)">Copy</button>
+    <a class="btn btn-outline-dark btn-lg  btn-secondary" asp-action="Overlay" asp-route-id="@Model.Id">Go</a>
+</div>
+</div>
+<div class="col-1"></div>
+<div id="rules" class="col-6">
+    <p>Goal:</p>
+    <ul class="list-group">
+        <li class="list-item">Die in 50 different ways playing levels from Endless Expert difficulty. There are more than 50 ways listed (because some are very rare), stop at 50.</li>
+    </ul>
+    <br />
+    <p>Rules:</p>    
+    <ul class="list-group">
+        <li class="list-item">Skipping levels is allowed.</li>
+        <li class="list-item">Getting a Game Over is allowed, just start a new one in game</li>
+        <li class="list-item">Pausing to look at WR time is obviously not allowed.</li>
+        <li class="list-item">Projectiles (wrenches, hammers, spikeballs, koopas, etc) count as the enemy who threw it if they hit you midair. If the item transforms when landing (e.g spiny from a lakitu) then it counts as that enemy AFTER it lands
+            <ul class="list-group">
+                <li class="list-group-item">Exception: All fireballs count as a fireball, not what threw the fireball</li>
+            </ul>
+            </li>
+        <li class="list-item">You can only die to 1 thing at a time. If you're not sure what killed you, don't count anything</li>
+        <li class="list-item">All goomba/galoomba/goombuds are the same thing</li>
+        <li class="list-item">All koopakids are the same thing</li>
+        <li class="list-item">Key death (any death with a key) can't be grouped with another death</li>
+        <li class="list-item">Yoshi death is you killing yoshi, not you dieing while on yoshi</li>
+        <li class="list-item">Kaizo block must *cause* the death, you shouldn't have to try to die after hiting it. It does not need to be blind (you can discover it &Aacute; not die, then die to it in the next life)</li>
+        <li class="list-item">Cannon ball / bullet bill size doesn't matter</li>
+    </ul>
+    <br />
+    Multi-player match rules
+    <ul class="list-group">
+        <li class="list-item">All of the above + ways to "undo" deaths, add them back to your opponents</li>
+        <li class="list-item">Idk I'll think of them once I add the match functionality, ideas include</li>
+        <li class="list-item">Gift subs / channel point redemptions to add back a death </li>
+    </ul>
+
+</div>
+</div>
+
+</div>
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+
+        function copyOverlay(i) {
+            var ele = document.getElementById("overlay-"+i);
+            ele.select();
+            ele.setSelectionRange(0,9999);
+            navigator.clipboard.writeText(ele.value);
+        }
+
+        function recalc() {
+            var deaths = document.getElementById("Clicksters").getElementsByClassName("deathPic2").length
+            document.getElementById("deathCount").innerText = deaths;
+            if (deaths > 25)
+                document.getElementById("encourage").innerText = "Good job!";
+            if(deaths>49)
+                document.getElementById("encourage").innerText = "You won!";
+
+        }
+
+
+        function toggleDeath(t,i) {
+
+            const ele = document.getElementById("img-" + i);
+            if (ele.classList.contains("deathPic2")) {
+                //undo death
+                ele.classList.remove("deathPic2");
+                ele.classList.add("deathPic");
+
+                conn.invoke("NotifyUndo", {
+                    trackerId: t,
+                    deathId: parseInt(i)
+                });
+
+
+            } else {
+                //do death
+                ele.classList.remove("deathPic");
+                ele.classList.add("deathPic2");
+                conn.invoke("NotifyDeath", {
+                    trackerId: t,
+                    deathId: parseInt(i)
+                });
+            };
+
+            recalc();
+        }
+        function sendRefresh() {
+            conn.invoke("NotifyRefresh", { trackerId: "@Model.Id", deathId: parseInt(0) });
+        }
+
+        //On page load
+        recalc();
+        const conn = initializeSignalRConnection("@Model.Id");
+        
+
+    </script>
+}
+    
