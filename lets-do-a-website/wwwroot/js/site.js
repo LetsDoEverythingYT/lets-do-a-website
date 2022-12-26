@@ -3,11 +3,19 @@
 
 
 const initializeSignalRConnection = (t) => {
-    const conn = new signalR.HubConnectionBuilder()
+    const conn =  new signalR.HubConnectionBuilder()
         .withUrl("/trackerhub?tracker="+t)
         .build();
 
-    conn.start().catch(err => console.error(err.toString()));
+  
+
+    try {
+       conn.start();
+    } catch (err) {
+        console.log(err);
+    }
+
+
     return conn;
 }
 

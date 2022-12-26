@@ -1,22 +1,25 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
+
+
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 80
+EXPOSE 8080
 EXPOSE 443
+ENV ASPNETCORE_URLS=http://*:8080
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["lets_do_a_websitee/lets_do_a_websitee.csproj", "lets_do_a_websitee/"]
-RUN dotnet restore "lets_do_a_websitee/lets_do_a_websitee.csproj"
+COPY ["lets-do-a-website/lets-do-a-website.csproj", "lets-do-a-website/"]
+RUN dotnet restore "lets-do-a-website/lets-do-a-website.csproj"
 COPY . .
-WORKDIR "/src/lets_do_a_websitee"
-RUN dotnet build "lets_do_a_websitee.csproj" -c Release -o /app/build
+WORKDIR "/src/lets-do-a-website"
+RUN dotnet build "lets-do-a-website.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "lets_do_a_websitee.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "lets-do-a-website.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "lets_do_a_websitee.dll"]
+ENTRYPOINT ["dotnet", "lets-do-a-website.dll"]

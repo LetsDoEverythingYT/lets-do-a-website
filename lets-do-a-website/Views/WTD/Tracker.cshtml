@@ -66,7 +66,7 @@
 <br />
 <br />
 <a id="reset" class="btn btn-danger" asp-action="Reset">RESET Run</a>
-<a id="reset" class="btn btn-danger" onclick="sendRefresh()">REFRESH OVERLAY</a>
+@*<a id="reset" class="btn btn-danger" onclick="sendRefresh()">REFRESH OVERLAY</a>*@
 
 <br />
 <br />
@@ -197,6 +197,14 @@ Monopoly style overlay
         //On page load
         recalc();
         const conn = initializeSignalRConnection("@Model.Id");
+
+
+        //console is telling me conn.start isn't asynch even though the doc says it is so whatever we will hack it.
+        function delay(time) {
+            return new Promise(resolve => setTimeout(resolve, time));
+        }
+
+        delay(500).then(() => sendRefresh());
         
 
     </script>
