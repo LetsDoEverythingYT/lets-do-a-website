@@ -170,11 +170,6 @@
     "Category": "3DW"
   },
   {
-    "Id": 49,
-    "Name": "Fire Ball",
-    "Category": "Etc"
-  },
-  {
     "Id": 35,
     "Name": "Fire Bar",
     "Category": "Gizmo"
@@ -232,7 +227,7 @@
   {
     "Id": 43,
     "Name": "Porcupuffer",
-    "Category": "Enemy"
+    "Category": "3DW"
   },
   {
     "Id": 33,
@@ -291,13 +286,38 @@
   },
   {
     "Id": 61,
-    "Name": "Jumping aginst ClearCondition",
+    "Name": "Lose Clear con (jump/dmg)",
     "Category": "Etc"
   },
   {
     "Id": 62,
     "Name": "Spikeball",
     "Category": "Gizmo"
+  },
+  {
+    "Id": 63,
+    "Name": "Booted Goomba",
+    "Category": "Enemy"
+  },
+  {
+    "Id": 64,
+    "Name": "Clown Car",
+    "Category": "Gizmo"
+  },
+  {
+    "Id": 65,
+    "Name": "Poison juice",
+    "Category": "Etc"
+  },
+  {
+    "Id": 66,
+    "Name": "Link Bomb",
+    "Category": "Etc"
+  },
+  {
+    "Id": 67,
+    "Name": "Pom Pom",
+    "Category": "3DW"
   }
 
 ]

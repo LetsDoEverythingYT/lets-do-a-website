@@ -1,5 +1,10 @@
 ﻿@using lets_do_a_website.Data.Entities
-@{ViewData["Title"] = "50 Ways to Die";}
+
+@{
+    ViewData["Title"] = "50 Ways to Die";
+    var streamers = (ViewData["streamers"] as IEnumerable<Permissions>);
+    var mods = (ViewData["mods"] as IEnumerable<Permissions>);
+}
 <br />
 Shoutout to <a href="https://www.twitch.tv/cliffy">Cliffy</a> for the idea from maker 1. I Kept the basic concept & added some deaths. Not many rule differences.
 <br />
@@ -8,11 +13,24 @@ Shoutout to <a href="https://www.twitch.tv/cliffy">Cliffy</a> for the idea from 
     <div class="row">
         <div class="col-7">
             <div class="row">
-                <div class="col-4">
-                    <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="WTD" asp-action="Tracker" asp-route-id="@User.Identity!.Name!">Track your solo run</a>
-                </div>
-                <div class="col-4">
-                    <a class="btn btn-outline-dark btn-lg btn-block btn-secondary">Mod a run</a>
+                <div class="dropdown col-4">
+                    @if(streamers.Count() == 1)
+                    {
+                        <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="WTD" asp-action="Tracker" asp-route-id="@streamers.First().Streamer">Track a Run</a>
+
+                    } else
+                    {
+                        <button class="btn btn-outline-dark btn-lg btn-block dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Track a run for:
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            @foreach (Permissions p in streamers)
+                            {
+                                <a class="dropdown-item" asp-controller="WTD" asp-action="Tracker" asp-route-id="@p.Streamer">@p.Streamer</a>
+
+                            }
+                        </ul>
+                    }
                 </div>
             </div>
             <br />
@@ -43,21 +61,19 @@ Shoutout to <a href="https://www.twitch.tv/cliffy">Cliffy</a> for the idea from 
             https://dev.twitch.tv/docs/api/reference#get-moderators*@
 
             <div id="o1" class="col-6">
-                <div>Allow your mods to update your tracker</div>
-                <div class="btn-group" role="group" aria-label="Allow Mod Access">
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="btnradio1">Off</label>
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio2">On</label>
-                </div>
+
+                <div>Allow your mods to track your run</div>
+                <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="WTD" asp-action="Hyduron">Import from Twitch (doesnt work yet)</a>
+
                 <br />
                 <div>Allow specific users:</div>
-                <div class="input-group">
-                    <input type="text" class="form-control" value="" id="add-user">
-                    <button class="btn btn-outline-dark btn-secondary" type="button" title="Add">Add</button>
-                </div>
-
+                <form method="post" asp-controller="WTD" asp-action="AddMod">
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="" id="id" name="id">
+                        <button class="btn btn-outline-dark" type="submit" title="Add">Add</button>
+                    </div>
+                </form>
 
 
                 <div class="dropdown">
@@ -65,12 +81,15 @@ Shoutout to <a href="https://www.twitch.tv/cliffy">Cliffy</a> for the idea from 
                         Currently allowed
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li>This doesn't work yet</li>
-                        <li>Obviously</li>
-                        <li>But it will look similar</li>
-                        <li>thoughts?</li>
+                        @foreach (Permissions p in mods)
+                        {
+                            <li class="dropdown-item">@p.Mod</li>
+                        }
                     </ul>
                 </div>
+                <br />
+                <a class="btn btn-outline-dark btn-lg btn-block btn-danger" asp-controller="WTD" asp-action="Hyduron">Remove All</a>
+
                 <br />
             </div>
         </div>

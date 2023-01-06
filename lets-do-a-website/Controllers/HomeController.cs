@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc;
 
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Xml.Linq;
 
 namespace lets_do_a_website.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ITrackerData TrackerData;
+        private readonly WTDRepo _repo;
 
-        public HomeController(ITrackerData trackerData)
+        public HomeController(ITrackerData trackerData, WTDRepo repo)
         {
             TrackerData = trackerData;
+            _repo = repo;   
         }
 
         public IActionResult Index()
@@ -72,6 +75,11 @@ namespace lets_do_a_website.Controllers
                 principal,
                 new AuthenticationProperties { IsPersistent = true });
 
+            _repo.GetOrAddUserSettings(user);
+            _repo.AddPermission(new Data.Entities.Permissions { Streamer = user, Mod = user });
+            _repo.SaveAll();
+
+
             return LocalRedirect(model.ReturnUrl);
         }
 
@@ -103,7 +111,14 @@ namespace lets_do_a_website.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            return  LocalRedirect(result.Properties!.Items["returnUrl"]!);
+            
+            var u = _repo.GetOrAddUserSettings(name);
+            u.ProfileImage = dispImg;
+            _repo.AddPermission(new Data.Entities.Permissions { Streamer = name, Mod = name });
+            _repo.SaveAll();
+
+
+            return LocalRedirect(result.Properties!.Items["returnUrl"]!);
         }
 
         [Route("Logout")]

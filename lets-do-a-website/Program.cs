@@ -2,7 +2,12 @@ using lets_do_a_website.Data;
 using lets_do_a_website.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Data.Common;
+using Microsoft.EntityFrameworkCore;
+using MySql.EntityFrameworkCore.Extensions;
+using Microsoft.EntityFrameworkCore.Design;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +16,25 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<ITrackerData, InMemoryTrackerData>();
 
+
+var dbConnection = Environment.GetEnvironmentVariable("CLEARDB_DATABASE_URL");
+if (dbConnection == null)
+{
+    dbConnection = builder.Configuration["CLEARDB_DATABASE_URL"];
+}
+var serverVersion = ServerVersion.AutoDetect(dbConnection);
+
+builder.Services.AddDbContext<WTDContext>(
+    dbContextOptions => dbContextOptions
+                .UseMySql(dbConnection, serverVersion)
+                // The following three options help with debugging, but should
+                // be changed or removed for production.
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors()
+);
+
+builder.Services.AddScoped<WTDRepo>();
 builder.Services.AddSignalR();
 
 
@@ -57,11 +81,11 @@ if (!app.Environment.IsDevelopment())
     //app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedProto
 });
+app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 

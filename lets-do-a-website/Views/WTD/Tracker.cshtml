@@ -8,6 +8,7 @@
     <div class="navbar-brand">/ 50 ways</div>
     <div class="navbar-brand" id="encourage"></div>
 </div>
+<div id="recon-warning" class="p-3 mb-2 alert alert-danger d-none" data-toggle="collapse">Connection to server lost. Attempting to reconnect, overlay will not update! Changes are not being saved!</div>
 
 <br />
 
@@ -32,7 +33,7 @@
                 var cl = "deathPic2";
                 if (d.Active) cl="deathPic";
                 if (d.Category != "3DW") continue;
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" alt="@d.Name">
+            <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name">
             }
     </div>
     <br />
@@ -43,7 +44,7 @@
                 var cl = "deathPic2";
                 if (d.Active) cl="deathPic";
                 if (d.Category != "Gizmo") continue;
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" alt="@d.Name">
+            <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name">
             }
     </div>
     <br />
@@ -54,7 +55,7 @@
                 var cl = "deathPic2";
                 if (d.Active) cl="deathPic";
                 @if (d.Category != "Etc") continue;
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" alt="@d.Name">
+            <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name">
 
             }
     </div>
@@ -65,8 +66,7 @@
 <br />
 <br />
 <br />
-<a id="reset" class="btn btn-danger" asp-action="Reset">RESET Run</a>
-@*<a id="reset" class="btn btn-danger" onclick="sendRefresh()">REFRESH OVERLAY</a>*@
+<a id="reset" class="btn btn-danger" asp-action="Reset" asp-route-id="@Model.Id">RESET Run</a>
 
 <br />
 <br />
@@ -107,26 +107,26 @@ Monopoly style overlay
 <div id="rules" class="col-6">
     <p>Goal:</p>
     <ul class="list-group">
-        <li class="list-item">Die in 50 different ways playing levels from Endless Expert difficulty. There are more than 50 ways listed (because some are very rare), stop at 50.</li>
+        <li class="list-item">Die in 50 different ways playing levels from Endless Expert difficulty. There are more than 50 ways listed (because some are very rare), when you reach 50 you win!</li>
     </ul>
     <br />
-    <p>Rules:</p>    
-    <ul class="list-group">
+    <p>Rules:</p>
+            <ul class="list-group">
+                <li class="list-item">You can only die to 1 thing at a time. If you're not sure what killed you, don't count anything. If it fills multiple categories, pick 1</li>
+                <li class="list-item">For ways that don't kill mario (softlock, losing clear con, killing yoshi), you must die/restart level to count it</li>
         <li class="list-item">Skipping levels is allowed.</li>
         <li class="list-item">Getting a Game Over is allowed, just start a new one in game</li>
-        <li class="list-item">Pausing to look at WR time is obviously not allowed.</li>
-        <li class="list-item">Projectiles (wrenches, hammers, spikeballs, koopas, etc) count as the enemy who threw it if they hit you midair. If the item transforms when landing (e.g spiny from a lakitu) then it counts as that enemy AFTER it lands
-            <ul class="list-group">
-                <li class="list-group-item">Exception: All fireballs count as a fireball, not what threw the fireball</li>
-            </ul>
-            </li>
-        <li class="list-item">You can only die to 1 thing at a time. If you're not sure what killed you, don't count anything</li>
-        <li class="list-item">All goomba/galoomba/goombuds are the same thing</li>
+
+        <li class="list-item">Projectiles (wrenches, hammers, spikeballs, koopas, etc) count as the enemy who threw it if they hit you midair. If the item is still alive after landing then it counts as that enemy AFTER it lands            </li>
+        <li class="list-item">All goomba/galoomba/goombuds are the same thing, unless they have a boot</li>
+        <li class="list-item">All boot types are the same thing</li>
         <li class="list-item">All koopakids are the same thing</li>
-        <li class="list-item">Key death (any death with a key) can't be grouped with another death</li>
+        <li class="list-item">Etc, if you died to something not directly pictured, there should be something it obviously counts as</li>
+        <li class="list-item">Key death is any death while holding a key, not just redcoins after a CP</li>
         <li class="list-item">Yoshi death is you killing yoshi, not you dieing while on yoshi</li>
-        <li class="list-item">Kaizo block must *cause* the death, you shouldn't have to try to die after hiting it. It does not need to be blind (you can discover it &Aacute; not die, then die to it in the next life)</li>
-        <li class="list-item">Cannon ball / bullet bill size doesn't matter</li>
+        <li class="list-item">Clear con is losing a clear con which you cannot re-qualify for (Jumping, Damage, etc?)</li>
+        <li class="list-item">Kaizo block must *cause* the death, you shouldn't have to try to die after hiting it. It does not need to be blind (you can discover it and not die, then die to it in the next life)</li>
+
     </ul>
     <br />
     Multi-player match rules
@@ -134,6 +134,7 @@ Monopoly style overlay
         <li class="list-item">All of the above + ways to "undo" deaths, add them back to your opponents</li>
         <li class="list-item">Idk I'll think of them once I add the match functionality, ideas include</li>
         <li class="list-item">Gift subs / channel point redemptions to add back a death </li>
+        <li class="list-item">Getting a game over adds back a death </li>
     </ul>
 
 </div>
@@ -163,7 +164,6 @@ Monopoly style overlay
 
         }
 
-
         function toggleDeath(t,i) {
 
             const ele = document.getElementById("img-" + i);
@@ -190,14 +190,49 @@ Monopoly style overlay
 
             recalc();
         }
+
         function sendRefresh() {
             conn.invoke("NotifyRefresh", { trackerId: "@Model.Id", deathId: parseInt(0) });
         }
 
+        function hideWarning() {
+            herok
+        }
+        function showWarning() {
+            let ele = document.getElementById("recon-warning");
+        }
+
+
+        function initializeSignalRConnection (t) {
+            conn =  new signalR.HubConnectionBuilder()
+                .withUrl("/trackerhub?tracker=" + t)
+                .withAutomaticReconnect()
+                .build();
+
+  
+    
+            try {
+               conn.start();
+            } catch (err) {
+                console.log(err);
+            }
+
+            conn.onreconnecting((error) => {
+                $('#recon-warning').removeClass("d-none");
+            });
+            conn.onreconnected((error) => {
+                $('#recon-warning').addClass("d-none");
+
+            });
+
+            return conn;
+        }
+
+
         //On page load
         recalc();
-        const conn = initializeSignalRConnection("@Model.Id");
-
+        var conn = 0;
+        initializeSignalRConnection("@Model.Id");
 
         //console is telling me conn.start isn't asynch even though the doc says it is so whatever we will hack it.
         function delay(time) {

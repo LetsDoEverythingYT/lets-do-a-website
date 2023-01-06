@@ -10,12 +10,25 @@
 <body>
 
 
+<div id="divvydivdiv" class="container-fluid" style="width:1750px;margin-left:0px;gap:15px;">
+    <span id="score-panel" class="position-relative d-inline-block" style="background:url(/img/50wtd/obg.png); width:165px; height:80px;top:35px">
+        <span id="profile-pic" class="position-absolute" style="left:10px; top:10px">
+                @if("none".Equals(ViewData["img"]))
+                {
+                    <img class="rounded-circle shadow-lg" src="~/img/twag.png" width="50">
+                } 
+                else
+                {
+                    <img class="rounded-circle shadow-lg" src="@ViewData["img"]" width="50">
 
-<div id="divvydivdiv" class="container-fluid">
-<div id="countycountcount" class="h1 d-inline">0</div>
+                }
+            </span>
+        <span id="countycountcount" class="position-absolute" style="font-size:50px;left:90px; top:1px">00</span>
+    </span>
+    
 @foreach (var d in Model.DeathWays!.Values.Where(x=> x.Active==true))
 {
-    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" />
+    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="padding:2px 0;"/>
 }
 
 </div>
@@ -25,6 +38,31 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript">
+
+        function initializeSignalRConnection(t) {
+            var conn = new signalR.HubConnectionBuilder()
+                .withUrl("/trackerhub?tracker=" + t)
+                .withAutomaticReconnect()
+                .build();
+
+
+
+            try {
+                conn.start();
+            } catch (err) {
+                console.log(err);
+            }
+
+            conn.onreconnecting((error) => {
+                console.log("recon");
+            });
+            conn.onreconnected((error) => {
+                console.log("ded");
+            });
+
+            return conn;
+        }
+
 
         
         const conn = initializeSignalRConnection("@Model.Id");
@@ -55,7 +93,12 @@
 
         function recalc() {
             //var remaining = document.getElementById("divvydivdiv").getElementsByTagName("img").length
-            document.getElementById("countycountcount").innerText = "" + deaths;
+            var dfiller="";
+            if(deaths <10) 
+                dfiller = "0";
+            
+
+            document.getElementById("countycountcount").innerText = "" + dfiller + deaths;
         }
 
 
