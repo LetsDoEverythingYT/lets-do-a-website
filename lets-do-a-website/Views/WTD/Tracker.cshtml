@@ -1,5 +1,12 @@
 ﻿@using lets_do_a_website.Data.Entities;
 @model Tracker
+@{
+    var settings = ViewData["settings"] as UserSettings;
+    if (settings == null)
+    {
+        settings = new UserSettings();
+    }
+}
 @{ViewData["Title"] = "50 Ways to Die";}
 
 <div class="container navbar navbar-expand-sm">
@@ -15,49 +22,167 @@
 <div id="Clicksters" class="container gap-2">
     <div class="bg-light">
 
-            <div >Enemies</div>
+        <div>Enemies</div>
+        <div class="row d-flex flex-row  g-0">
 
-            @foreach (var d in Model.DeathWays!.Values)
+        @foreach (var d in Model.DeathWays!.Values)
+        {
+            
+            if (d.Category != "Enemy") continue;
+
+                if (settings.TrackerOnDeath == 1) //fade
             {
-                var cl = "deathPic2";
-                if (d.Active) cl="deathPic";
-                if (d.Category != "Enemy") continue;
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name">
+                var opac = d.Active ? "1" : "0.3"; 
+                
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
             }
+                else if (settings.TrackerOnDeath == 2) //X
+            {
+                var hidden = d.Active ? "d-none" : "";
+                <div class="col d-flex flex-grow-0 flex-shrink-0">
+                    <span class="position-absolute">
+                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
+                    </span> 
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" />
+                </div>
+            }
+                else if (settings.TrackerOnDeath == 3) //gray
+            {
+                var gray = d.Active ? 0 : 100;
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray)">
+            }
+                else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
+            {
+                if (d.Active)
+                {
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
+                }
+            }
+        }
+        </div>
     </div>
     <br />
     <div class="bg-light">
         <div >3DW</div>
-            @foreach (var d in Model.DeathWays.Values)
+        <div class="row d-flex flex-row  g-0">
+
+            @foreach (var d in Model.DeathWays!.Values)
             {
-                var cl = "deathPic2";
-                if (d.Active) cl="deathPic";
+
                 if (d.Category != "3DW") continue;
-            <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name">
+
+                if (settings.TrackerOnDeath == 1) //fade
+                {
+                    var opac = d.Active ? "1" : "0.3";
+
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
+                }
+                else if (settings.TrackerOnDeath == 2) //X
+                {
+                    var hidden = d.Active ? "d-none" : "";
+                    <div class="col d-flex flex-grow-0 flex-shrink-0">
+                        <span class="position-absolute">
+                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
+                        </span>
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" />
+                    </div>
+                }
+                else if (settings.TrackerOnDeath == 3) //gray
+                {
+                    var gray = d.Active ? 0 : 100;
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray)">
+                }
+                else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
+                {
+                    if (d.Active)
+                    {
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
+                    }
+                }
             }
+        </div>
     </div>
     <br />
     <div class="bg-light">
         <div>Gizmo</div>
-            @foreach (var d in Model.DeathWays.Values)
+        <div class="row d-flex flex-row  g-0">
+
+            @foreach (var d in Model.DeathWays!.Values)
             {
-                var cl = "deathPic2";
-                if (d.Active) cl="deathPic";
+
                 if (d.Category != "Gizmo") continue;
-            <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name">
+
+                if (settings.TrackerOnDeath == 1) //fade
+                {
+                    var opac = d.Active ? "1" : "0.3";
+
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
+                }
+                else if (settings.TrackerOnDeath == 2) //X
+                {
+                    var hidden = d.Active ? "d-none" : "";
+                    <div class="col d-flex flex-grow-0 flex-shrink-0">
+                        <span class="position-absolute">
+                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
+                        </span>
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" />
+                    </div>
+                }
+                else if (settings.TrackerOnDeath == 3) //gray
+                {
+                    var gray = d.Active ? 0 : 100;
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray)">
+                }
+                else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
+                {
+                    if (d.Active)
+                    {
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
+                    }
+                }
             }
+        </div>
     </div>
     <br />
     <div class="bg-light">
-           <div >Etc</div>
-            @foreach (var d in Model.DeathWays.Values)
-            {
-                var cl = "deathPic2";
-                if (d.Active) cl="deathPic";
-                @if (d.Category != "Etc") continue;
-            <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" class="@cl" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name">
+        <div >Etc</div>
+        <div id="dumpstuff" class="row d-flex flex-row  g-0">
 
+        @foreach (var d in Model.DeathWays!.Values)
+        {
+            
+            if (d.Category != "Etc") continue;
+
+            if (settings.TrackerOnDeath == 1) //fade
+            {
+                var opac = d.Active ? "1" : "0.3"; 
+                
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
             }
+            else if (settings.TrackerOnDeath == 2) //X
+            {
+                var hidden = d.Active ? "d-none" : "";
+                <div class="col d-flex flex-grow-0 flex-shrink-0">
+                    <span class="position-absolute">
+                       <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
+                    </span> 
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" />
+                </div>
+            }
+            else if (settings.TrackerOnDeath == 3) //gray
+            {
+                var gray = d.Active ? 0 : 100;
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray)">
+            }
+            else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
+            {
+                if (d.Active)
+                {
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
+                }
+            }
+        }
+        </div>
     </div>
 </div>
 
@@ -66,21 +191,64 @@
 <br />
 <br />
 <br />
+<div class="d-flex justify-content-between">
+
+<div id="undo" class="btn btn-warning" onclick="undoMove('@Model.Id')">UNDO LAST</div>
+
 <a id="reset" class="btn btn-danger" asp-action="Reset" asp-route-id="@Model.Id">RESET Run</a>
 
+</div>
 <br />
 <br />
+
+<div class="container bg-light">
+
+
+    <form method="post" asp-controller="WTD" asp-action="ChangeSettings">
+        <div class="row">
+        <div class="col">
+        Tracker page, on death pics should:<br />
+        <input type="radio" id="T1" name="tracker" value="1" @(settings.TrackerOnDeath == 1 ? "checked" : "")>
+        <label for="T1">Fade</label><br>
+        <input type="radio" id="T2" name="tracker" value="2" @(settings.TrackerOnDeath == 2 ? "checked" : "")>
+        <label for="T2">Big X</label><br>
+        <input type="radio" id="T3" name="tracker" value="3" @(settings.TrackerOnDeath == 3 ? "checked" : "")>
+        <label for="T3">Grayscale</label><br>
+        <input type="radio" id="T4" name="tracker" value="4" @(settings.TrackerOnDeath == 4 ? "checked" : "")>
+        <label for="T4">Remove</label><br>
+        <input type="radio" id="T5" name="tracker" value="5" @(settings.TrackerOnDeath == 5 ? "checked" : "")>
+        <label for="T5">Remove w/wrap</label><br>
+        </div>
+
+        <div class="col">
+        Overlay page, on death pics should:<br />
+        <input type="radio" id="O1" name="overlay" value="1" @(settings.OverlayOnDeath == 1 ? "checked" : "")>
+        <label for="O1">Remove w/wrap</label><br>
+        <input type="radio" id="O2" name="overlay" value="2" @(settings.OverlayOnDeath == 2 ? "checked" : "")>
+        <label for="O2">Grayscale</label><br>
+        <input type="radio" id="O3" name="overlay" value="3" @(settings.OverlayOnDeath == 3 ? "checked" : "")>
+        <label for="O5">Big X</label><br>
+        </div>
+        <br />
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="submit" value="Submit">
+        </div>
+    </form>
+</div>
+
+<br />
+
 @{
     var overlay1 = Url.Action("Overlay","WTD", new { id = Model.Id},"https");
 }
-Overlay options:
 <br />
 
 <div id="page-bottom-stuff" class="container">
+        Overlay options:
 <div class="row">
 <div id="Overlays" class="col-5">
 
-Standard horizontal overlay
+Standard  overlay. Import to OBS as a browser source. Set page width to 1920 or whatever you prefer for # of lines, then resize if desired.
 <div class="input-group">
     <input type="text" class="form-control" value="@overlay1" id="overlay-1">
     <button class="btn btn-outline-dark" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(1)">Copy</button>
@@ -88,21 +256,16 @@ Standard horizontal overlay
 </div>
 <br />
 
-Vertical side-panel overlay
-<div class="input-group">
-    <input type="text" class="form-control" value="@overlay1" id="copy-input">
-    <button class="btn btn-outline-dark  btn-secondary" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(2)">Copy</button>
-    <a class="btn btn-outline-dark btn-lg  btn-secondary" asp-action="Overlay" asp-route-id="@Model.Id">Go</a>
-</div>
-<br />
 
-Monopoly style overlay
+
+Monopolyboard style overlay (not working yet, hit me up if you know how to css it)
 <div class="input-group">
     <input type="text" class="form-control" value="@overlay1" id="copy-input">
     <button class="btn btn-outline-dark btn-secondary" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(3)">Copy</button>
     <a class="btn btn-outline-dark btn-lg  btn-secondary" asp-action="Overlay" asp-route-id="@Model.Id">Go</a>
 </div>
 </div>
+
 <div class="col-1"></div>
 <div id="rules" class="col-6">
     <p>Goal:</p>
@@ -123,7 +286,7 @@ Monopoly style overlay
         <li class="list-item">All koopakids are the same thing</li>
         <li class="list-item">Etc, if you died to something not directly pictured, there should be something it obviously counts as</li>
         <li class="list-item">Key death is any death while holding a key, not just redcoins after a CP</li>
-        <li class="list-item">Yoshi death is you killing yoshi, not you dieing while on yoshi</li>
+        <li class="list-item">Yoshi death is you killing yoshi then dying, not you dieing while on yoshi. You can die together as long as yoshi does die</li>
         <li class="list-item">Clear con is losing a clear con which you cannot re-qualify for (Jumping, Damage, etc?)</li>
         <li class="list-item">Kaizo block must *cause* the death, you shouldn't have to try to die after hiting it. It does not need to be blind (you can discover it and not die, then die to it in the next life)</li>
 
@@ -147,6 +310,11 @@ Monopoly style overlay
 @section Scripts {
     <script type="text/javascript">
 
+        
+        var deathCount = @Model.DeathWays!.Values.Where(d => !d.Active).Count();
+        const TrackerOnDeath = @settings.TrackerOnDeath;
+        var lastMove = 0;
+
         function copyOverlay(i) {
             var ele = document.getElementById("overlay-"+i);
             ele.select();
@@ -155,38 +323,96 @@ Monopoly style overlay
         }
 
         function recalc() {
-            var deaths = document.getElementById("Clicksters").getElementsByClassName("deathPic2").length
-            document.getElementById("deathCount").innerText = deaths;
-            if (deaths > 25)
+
+            document.getElementById("deathCount").innerText = deathCount;
+
+            if (deathCount > 25)
                 document.getElementById("encourage").innerText = "Good job!";
-            if(deaths>49)
+            if (deathCount > 49)
                 document.getElementById("encourage").innerText = "You won!";
 
         }
 
         function toggleDeath(t,i) {
 
-            const ele = document.getElementById("img-" + i);
-            if (ele.classList.contains("deathPic2")) {
-                //undo death
-                ele.classList.remove("deathPic2");
-                ele.classList.add("deathPic");
+            lastMove = i;
+            let ele = document.getElementById("img-" + i);
+            let undoDeath= false;
 
+            if (TrackerOnDeath  == 1) //fade
+            {
+                if($("#img-" + i).css('opacity') == 1) {
+
+                    $("#img-" + i).css('opacity', '0.3');
+                } else {
+                    undoDeath = true;
+                    $("#img-" + i).css('opacity', '1');
+                }
+
+            } else if (TrackerOnDeath == 2) // X
+            {
+                ele = document.getElementById("noimg-" + i);
+                if (ele.classList.contains("d-none"))
+                {
+                    ele.classList.remove("d-none");
+                } else {
+                    undoDeath = true;
+                    ele.classList.add("d-none")
+                }
+            }
+            else if (TrackerOnDeath == 3) //gray
+            {
+                if (ele.style.cssText.includes("grayscale(0)"))
+                {
+                    ele.style = "width:80px;display:inline;filter:grayscale(100)";
+                } else {
+                    undoDeath = true;
+                    ele.style = "width:80px;display:inline;filter:grayscale(0)";
+                }
+            }
+            else if (TrackerOnDeath == 4) //delete
+            {
+                if (ele.style.cssText.includes("visible")) 
+                {
+                    ele.style = "width:80px;display:inline;visibility:hidden";
+                } else {
+                    undoDeath = true;
+                    ele.style = "width:80px;display:inline;visibility:visible";
+                }
+            }
+            else if (TrackerOnDeath == 5) //delete
+            {
+                if (ele != null) 
+                {
+                    ele.remove();
+                 } else {
+                    undoDeath = true;
+
+                    var img = new Image();
+                    img.id="img-" + i;
+                    img.src = "/img/50wtd/" + i + ".png";
+                    img.setAttribute("onclick", "toggleDeath('" + t + "'," + i + ")");
+                    img.title="idk you deleted it";
+                    img.style = "width:80px;display:inline;";
+                    document.getElementById("dumpstuff").appendChild(img);
+                }
+            }
+            
+ 
+            if(undoDeath) {
                 conn.invoke("NotifyUndo", {
                     trackerId: t,
                     deathId: parseInt(i)
                 });
-
-
-            } else {
-                //do death
-                ele.classList.remove("deathPic");
-                ele.classList.add("deathPic2");
+                deathCount = deathCount-1;
+            } 
+            else {
                 conn.invoke("NotifyDeath", {
                     trackerId: t,
                     deathId: parseInt(i)
                 });
-            };
+                deathCount = deathCount+1;
+            }
 
             recalc();
         }
@@ -195,11 +421,10 @@ Monopoly style overlay
             conn.invoke("NotifyRefresh", { trackerId: "@Model.Id", deathId: parseInt(0) });
         }
 
-        function hideWarning() {
-            herok
-        }
-        function showWarning() {
-            let ele = document.getElementById("recon-warning");
+        function undoMove(t) {
+            if (lastMove == 0)
+                return;
+            toggleDeath(t, lastMove);
         }
 
 

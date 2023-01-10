@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using lets_do_a_website.Data;
 
@@ -10,9 +11,10 @@ using lets_do_a_website.Data;
 namespace lets_do_a_website.Migrations
 {
     [DbContext(typeof(WTDContext))]
-    partial class WTDContextModelSnapshot : ModelSnapshot
+    [Migration("20230107031503_newstuff2")]
+    partial class newstuff2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,19 +88,22 @@ namespace lets_do_a_website.Migrations
                     b.Property<bool>("DarkMode")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("DeleteOnDeath")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("OverlayOnDeath")
-                        .HasColumnType("int");
+                    b.Property<bool>("OverlayDeleteOnDeath")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("OverlayWrap")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("ProfileImage")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("TrackerOnDeath")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

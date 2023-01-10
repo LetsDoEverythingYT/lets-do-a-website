@@ -6,6 +6,7 @@ namespace lets_do_a_website.Data.Entities
     public class Tracker
     {
         [Key]
+        public int key { get; set; }    
         public string? Id { get; set; }
         public DateTime LastUsed { get; set; }
         [NotMapped]

@@ -10,8 +10,8 @@ namespace lets_do_a_website.Data
         public DbSet<UserSettings> UserSettings { get; set; }   
         public DbSet<Tracker> Trackers { get; set; }
         public DbSet<Permissions> Permissions { get; set; }
+        public DbSet<RunStats> RunStats { get; set; }
 
-                
         public WTDContext(DbContextOptions<WTDContext> ctx) : base(ctx)
         {
             

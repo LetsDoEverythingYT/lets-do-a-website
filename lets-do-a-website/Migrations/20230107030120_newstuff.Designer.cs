@@ -11,8 +11,8 @@ using lets_do_a_website.Data;
 namespace lets_do_a_website.Migrations
 {
     [DbContext(typeof(WTDContext))]
-    [Migration("20230106005918_initial")]
-    partial class initial
+    [Migration("20230107030120_newstuff")]
+    partial class newstuff
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,25 +40,62 @@ namespace lets_do_a_website.Migrations
                     b.ToTable("Permissions");
                 });
 
+            modelBuilder.Entity("lets_do_a_website.Data.Entities.RunStats", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Deaths")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Streamer")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Submitted")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RunStats");
+                });
+
             modelBuilder.Entity("lets_do_a_website.Data.Entities.Tracker", b =>
                 {
+                    b.Property<int>("key")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("LastUsed")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("Id");
+                    b.HasKey("key");
 
                     b.ToTable("Trackers");
                 });
 
             modelBuilder.Entity("lets_do_a_website.Data.Entities.UserSettings", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("DarkMode")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("DeleteOnDeath")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("OverlayDeleteOnDeath")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("ProfileImage")

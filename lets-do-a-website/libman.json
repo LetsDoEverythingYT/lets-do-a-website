@@ -58,6 +58,17 @@
       "files": [
         "dist/browser/signalr.min.js.map"
       ]
+    },
+    {
+      "library": "bootstrap@5.3.0-alpha1",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap-grid.css",
+        "dist/css/bootstrap-reboot.css",
+        "dist/css/bootstrap-utilities.css",
+        "dist/css/bootstrap.css"
+      ]
     }
   ]
 }

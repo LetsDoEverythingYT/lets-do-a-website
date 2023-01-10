@@ -1,6 +1,10 @@
 ﻿@using lets_do_a_website.Data.Entities;
 @model Tracker
+@{
+    var settings = ViewData["settings"] as UserSettings;
 
+}
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,28 +14,53 @@
 <body>
 
 
-<div id="divvydivdiv" class="container-fluid" style="width:1750px;margin-left:0px;gap:15px;">
-    <span id="score-panel" class="position-relative d-inline-block" style="background:url(/img/50wtd/obg.png); width:165px; height:80px;top:35px">
-        <span id="profile-pic" class="position-absolute" style="left:10px; top:10px">
-                @if("none".Equals(ViewData["img"]))
+    <div id="divvydivdiv" class="container-fluid" style="margin-left:0px;gap:15px;">
+        <div id="rowyrowrow" class="row d-flex flex-row  g-0">
+            <span id="score-panel" class="position-relative d-inline-block" style="background:url(/img/50wtd/obg.png); width:160px; height:80px;top:1px">
+                <span id="profile-pic" class="position-absolute" style="left:12px; top:10px">
+                @if("none".Equals(settings.ProfileImage))
                 {
-                    <img class="rounded-circle shadow-lg" src="~/img/twag.png" width="50">
+                    <img class="rounded-circle shadow-lg" src="~/img/twag.png" width="60">
                 } 
                 else
                 {
-                    <img class="rounded-circle shadow-lg" src="@ViewData["img"]" width="50">
+                    <img class="rounded-circle shadow-lg" src="@settings.ProfileImage" width="60">
 
                 }
+                </span>
+                <span id="countycountcount" class="position-absolute" style="font-size:50px;left:90px; top:1px">00</span>
             </span>
-        <span id="countycountcount" class="position-absolute" style="font-size:50px;left:90px; top:1px">00</span>
-    </span>
-    
-@foreach (var d in Model.DeathWays!.Values.Where(x=> x.Active==true))
-{
-    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="padding:2px 0;"/>
-}
 
-</div>
+        
+   
+        @foreach (var d in Model.DeathWays!.Values)
+        {
+
+            
+
+            if (settings.OverlayOnDeath == 1 && d.Active) //disappear on death
+            {
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="padding:2px 0;width:80px" />
+            } 
+            else if (settings.OverlayOnDeath == 2) // gray on death
+            {
+                    var gray = d.Active ? 0 : 100;
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="padding:2px 0;width:80px;filter:grayscale(@gray)" />
+            }
+            else if (settings.OverlayOnDeath == 3) // X on death
+            {
+                var hidden = d.Active ? "visibility:hidden" : "";
+                <div class="col d-flex flex-grow-0 flex-shrink-0">
+                    <span class="position-absolute">
+                        <img id="noimg-@d.Id" src="~/img/50wtd/no.png" style="padding:2px 0;@hidden" />
+                    </span> 
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="padding:2px 0;" />
+                </div>
+            }
+        }
+
+        </div>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
@@ -44,8 +73,6 @@
                 .withUrl("/trackerhub?tracker=" + t)
                 .withAutomaticReconnect()
                 .build();
-
-
 
             try {
                 conn.start();
@@ -64,7 +91,6 @@
         }
 
 
-        
         const conn = initializeSignalRConnection("@Model.Id");
         var deaths = @Model.DeathWays.Values.Where(x=> x.Active==false).Count();
         recalc();
@@ -72,17 +98,53 @@
 
         conn.on("ReceiveNewDeath", ({ trackerId, deathId, deathCount }) => {
             
-            document.getElementById("img-"+deathId).remove();
+            
+            @if (settings.OverlayOnDeath == 1) //disappear on death
+            { 
+                @:document.getElementById("img-" + deathId).remove();
+            }
+            else if (settings.OverlayOnDeath == 2) // gray on death
+            {
+                @:var i =document.getElementById("img-" + deathId);
+                @:i.style = "padding:2px 0;width:80px;filter:grayscale(100)";
+            } 
+            else if (settings.OverlayOnDeath == 3) // X on death
+            {
+               @:var i =document.getElementById("noimg-" + deathId);
+               @:i.style = "padding:2px 0;";
+            }
+
+
             deaths = deaths +1;
             recalc();
         });
 
 
         conn.on("ReceiveUndo", ({ trackerId, deathId, deathCount }) => {
-            var i = new Image();
-            i.id="img-" + deathId;
-            i.src = "/img/50wtd/" + deathId + ".png";
-            document.getElementById("divvydivdiv").appendChild(i);
+
+
+            @if (settings.OverlayOnDeath == 1) //disappear on death
+            {
+                @:var i = new Image();
+                @:i.id="img-" + deathId;
+                @:i.src = "/img/50wtd/" + deathId + ".png";
+                @:i.style = "padding:2px 0;width:80px";
+                @:document.getElementById("rowyrowrow").appendChild(i);
+            }
+            else if (settings.OverlayOnDeath == 2) // gray on death
+            {
+                @:var i = document.getElementById("img-" + deathId);
+                @:i.style = "padding:2px 0;width:80px;filter:grayscale(0)";
+            
+            }
+            else if (settings.OverlayOnDeath == 3) // X on death
+            {
+               @:var i =document.getElementById("noimg-" + deathId);
+               @:i.style = "padding:2px 0;visibility:hidden";
+            }
+
+
+
             deaths = deaths -1;
             recalc();
         });
@@ -97,9 +159,12 @@
             if(deaths <10) 
                 dfiller = "0";
             
-
             document.getElementById("countycountcount").innerText = "" + dfiller + deaths;
+
+            if(deaths < 0)
+                location.reload();
         }
+
 
 
 </script>

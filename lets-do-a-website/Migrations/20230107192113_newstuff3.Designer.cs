@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using lets_do_a_website.Data;
 
@@ -10,9 +11,10 @@ using lets_do_a_website.Data;
 namespace lets_do_a_website.Migrations
 {
     [DbContext(typeof(WTDContext))]
-    partial class WTDContextModelSnapshot : ModelSnapshot
+    [Migration("20230107192113_newstuff3")]
+    partial class newstuff3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

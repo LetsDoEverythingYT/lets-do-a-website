@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using lets_do_a_website.Data;
 
@@ -10,9 +11,10 @@ using lets_do_a_website.Data;
 namespace lets_do_a_website.Migrations
 {
     [DbContext(typeof(WTDContext))]
-    partial class WTDContextModelSnapshot : ModelSnapshot
+    [Migration("20230106014751_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,28 +40,6 @@ namespace lets_do_a_website.Migrations
                     b.ToTable("Permissions");
                 });
 
-            modelBuilder.Entity("lets_do_a_website.Data.Entities.RunStats", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Deaths")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Streamer")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Submitted")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RunStats");
-                });
-
             modelBuilder.Entity("lets_do_a_website.Data.Entities.Tracker", b =>
                 {
                     b.Property<int>("key")
@@ -83,22 +63,16 @@ namespace lets_do_a_website.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<bool>("DarkMode")
+                    b.Property<bool>("DeleteOnDeath")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("OverlayOnDeath")
-                        .HasColumnType("int");
-
                     b.Property<string>("ProfileImage")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("TrackerOnDeath")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

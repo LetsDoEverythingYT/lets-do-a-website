@@ -10,6 +10,7 @@ namespace lets_do_a_website.Data
         void RemoveTracker(string id);
         Tracker GetById(string id, bool createIfDNE = false);
         IEnumerable<Tracker> GetAll();
+        string Stringify(string id);
 
     }
 
@@ -80,6 +81,23 @@ namespace lets_do_a_website.Data
 
             }
             return t;
+        }
+
+        public string Stringify(string id)
+        {
+            var s = "";
+            foreach(var d in GetById(id, false).DeathWays.Values)
+            {
+                if (d.Active)
+                {
+                    s += "1";
+                }
+                else
+                {
+                    s += "0";
+                }
+            }
+            return s;
         }
     }
 }

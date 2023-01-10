@@ -66,7 +66,7 @@ builder.Services.AddAuthentication(options => {
         o.ClientId = clientId;
         o.ClientSecret = clientSecret;
         o.Scope.Clear();
-        o.ForceVerify = true;
+        //o.ForceVerify = true;
     });
     
 var app = builder.Build();

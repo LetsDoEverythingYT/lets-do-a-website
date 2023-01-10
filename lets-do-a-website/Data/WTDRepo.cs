@@ -31,6 +31,12 @@ namespace lets_do_a_website.Data
 
             _ctx.Permissions.Add(p);
         }
+        public void RemovePermissions(string streamer)
+        {
+            foreach(Permissions p in _ctx.Permissions.Where( p => !p.Mod.Equals(streamer))) {
+               _ctx.Permissions.Remove(p);
+            }
+        }
 
         public IEnumerable<Permissions> GetAllStreamers(string mod)
         {
@@ -39,11 +45,11 @@ namespace lets_do_a_website.Data
 
         public UserSettings GetUserSettings(string streamer)
         {
-            return _ctx.UserSettings.Find(streamer);
+            return _ctx.UserSettings.Where( u => u.Name.Equals(streamer)).FirstOrDefault();
         }        
         public UserSettings GetOrAddUserSettings(string streamer)
         {
-            var u = _ctx.UserSettings.Find(streamer);
+            var u = _ctx.UserSettings.Where(u => u.Name.Equals(streamer)).FirstOrDefault();
             if (u == null)
             {
                 u = AddUserSettings(streamer);
@@ -57,6 +63,10 @@ namespace lets_do_a_website.Data
             return u;
         }
 
+        public void AddRunStats(RunStats stat)
+        {
+            _ctx.RunStats.Add(stat);
+        }
         public bool SaveAll()
         {
             return _ctx.SaveChanges() > 0;
