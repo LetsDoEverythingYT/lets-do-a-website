@@ -5,9 +5,7 @@
     var streamers = (ViewData["streamers"] as IEnumerable<Permissions>);
     var mods = (ViewData["mods"] as IEnumerable<Permissions>);
 }
-<br />
-Shoutout to <a href="https://www.twitch.tv/cliffy">Cliffy</a> for the idea from maker 1. I Kept the basic concept & added some deaths. Not many rule differences.
-<br />
+
 <br />
 <div class="container">
     <div class="row">
@@ -35,10 +33,7 @@ Shoutout to <a href="https://www.twitch.tv/cliffy">Cliffy</a> for the idea from 
             </div>
             <br />
             <br />
-            <div class="btn btn-outline-dark btn-lg btn-block btn-secondary" asp-controller="WTD" asp-action="Index">Create a match (Not yet implemented)</div>
-            <br />
-            <br />
-
+      
 
             <a class="btn btn-outline-dark btn-lg btn-block btn-secondary" asp-controller="WTD" asp-action="Hyduron">Hyduron's race (Not yet implemented)</a>
         <br />
@@ -93,32 +88,4 @@ Shoutout to <a href="https://www.twitch.tv/cliffy">Cliffy</a> for the idea from 
         </div>
     </div>
     <br />
-</div>
-
-<div id="rules" class="col-6">
-    <p>Goal:</p>
-    <ul class="list-group">
-        <li class="list-item">Die in 50 different ways playing levels from Endless Expert difficulty. There are more than 50 ways listed (because some are very rare), when you reach 50 you win!</li>
-    </ul>
-    <br />
-    <p>Rules:</p>
-    <ul class="list-group">
-        <li class="list-item">You can only die to 1 thing at a time. If you're not sure what killed you, don't count anything. If it fills multiple categories, pick 1</li>
-        <li class="list-item">For ways that don't kill mario (softlock, losing clear con, killing yoshi), you must die/restart level to count it</li>
-        <li class="list-item">Skipping levels is allowed.</li>
-        <li class="list-item">Getting a Game Over is allowed, just start a new one in game</li>
-
-        <li class="list-item">Projectiles (wrenches, hammers, spikeballs, koopas, etc) count as the enemy who threw it if they hit you midair. If the item is still alive after landing then it counts as that enemy AFTER it lands            </li>
-        <li class="list-item">All goomba/galoomba/goombuds are the same thing, unless they have a boot</li>
-        <li class="list-item">All boot types are the same thing</li>
-        <li class="list-item">All koopakids are the same thing</li>
-        <li class="list-item">Etc, if you died to something not directly pictured, there should be something it obviously counts as</li>
-        <li class="list-item">Key death is any death while holding a key, not just redcoins after a CP</li>
-        <li class="list-item">Yoshi death is you killing yoshi then dying, not you dieing while on yoshi. You can die together as long as yoshi does die</li>
-        <li class="list-item">Clear con is losing a clear con which you cannot re-qualify for (Jumping, Damage, etc?)</li>
-        <li class="list-item">Kaizo block must *cause* the death, you shouldn't have to try to die after hiting it. It does not need to be blind (you can discover it and not die, then die to it in the next life)</li>
-
-    </ul>
-
-
 </div>

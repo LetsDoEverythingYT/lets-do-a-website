@@ -1,0 +1,122 @@
+﻿@using lets_do_a_website.Data.Entities
+
+@{
+    ViewData["Title"] = "50 Ways to Die";
+}
+<br />
+
+<h1 class="mb-3 text-center">50 Ways To Die</h1>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-12 card d-inline">
+            Shoutout to <a href="https://www.twitch.tv/cliffy">Cliffy</a> for the idea from maker 1. I kept the basic concept & added some deaths.
+        </div>
+
+        <br />
+        <br />
+        </div>
+    <div class="row mt-2">
+        <div class="col-6 card">
+
+            <div id="rules">
+                <p>Goal:</p>
+                <ul class="list-group">
+                    <li class="list-item">Die in 50 different ways playing levels from Endless Expert difficulty. There are more than 50 ways listed (because some are very rare), when you reach 50 you win!</li>
+                </ul>
+                <br />
+                <p>Rules:</p>
+                <ul class="list-group">
+                    <li class="list-item">You can only die to 1 thing at a time. If you're not sure what killed you, don't count anything. If it fills multiple categories, pick 1</li>
+                    <li class="list-item">For ways that don't kill mario (softlock, losing clear con, killing yoshi), you must die/restart level to count it. 50 Marios must die!</li>
+                    <li class="list-item">Skipping levels is allowed.</li>
+                    <li class="list-item">Getting a Game Over is allowed, just start a new one in game</li>
+
+                    <li class="list-item">Projectiles (wrenches, hammers, spikeballs, koopas, etc) count as the enemy who threw it if they hit you midair. If the item is still alive after landing then it counts as that enemy AFTER it lands</li>
+                    <li class="list-item">If you die to something not directly listed, there should be something it obviously counts as</li>
+                   
+                    <li class="list-item">Goomba: All goomba/galoomba/goombuds are the same thing, unless they have a boot</li>
+                    <li class="list-item">Booted Goomba: All boot types are the same thing</li>
+                    <li class="list-item">Koopa: All color/size koopas are the same thing...</li>
+                    <li class="list-item">Beetle</li>
+                    <li class="list-item">Spiny</li>
+                    <li class="list-item">Spike Top</li>
+                    <li class="list-item">Piranha</li>
+                    <li class="list-item">Pokey</li>
+                    <li class="list-item">Monty Mole</li>
+                    <li class="list-item">Rocky Wrench</li>
+                    <li class="list-item">Magikoopa</li>
+                    <li class="list-item">Babomb</li>
+                    <li class="list-item">Chain Chomp</li>
+                    <li class="list-item">Muncher</li>
+                    <li class="list-item">Boo</li>
+                    <li class="list-item">Blooper</li>
+                    <li class="list-item">Dry Bones</li>
+                    <li class="list-item">Fish Bones</li>
+                    <li class="list-item">Fish</li>
+                    <li class="list-item">Spike (enemy)</li>
+                    <li class="list-item">Hammer Bro</li>
+                    <li class="list-item">Wiggler</li>
+                    <li class="list-item">Lakitu</li>
+                    <li class="list-item">Thwomp</li>
+                    <li class="list-item">Koopakid: All 7 are the same thing</li>
+                    <li class="list-item">Boom Boom</li>
+                    <li class="list-item">Bowser/Meowser</li>
+                    <li class="list-item">Bowser Jr</li>
+                    <li class="list-item">Ant</li>
+                    <li class="list-item">Stingbee</li>
+                    <li class="list-item">Skipsqueak</li>
+                    <li class="list-item">Koopa Car</li>
+                    <li class="list-item">Hop-Chop</li>
+                    <li class="list-item">Fire Bro</li>
+                    <li class="list-item">Creeper</li>
+                    <li class="list-item">Porcupuffer</li>
+                    <li class="list-item">Pom Pom</li>
+                    <li class="list-item">Charvaargh</li>
+                    <li class="list-item">Icicle</li>
+                    <li class="list-item">Poison Mushroom</li>
+                    <li class="list-item">Spikeball</li>
+                    <li class="list-item">Clown car: Must shoot you, not push you to death</li>
+                    <li class="list-item">Fire Bar</li>
+                    <li class="list-item">Burner</li>
+                    <li class="list-item">Cannonball</li>
+                    <li class="list-item">Bullet/Banzai Bill</li>
+                    <li class="list-item">Grinder</li>
+                    <li class="list-item">Skewer</li>
+                    <li class="list-item">A spike</li>
+                    <li class="list-item">Lava Bubble</li>
+                    <li class="list-item">Angry Sun</li>
+                    <li class="list-item">Clear Condition: Only conditions you start with and cannot regain (take damage, touch the ground, etc?)</li>
+                    <li class="list-item">Zelda bomb</li>
+                    <li class="list-item">Yoshi: Kill a yoshi by squish or pit etc, not just have him run away upset</li>
+                    <li class="list-item">Time out</li>
+                    <li class="list-item">Phanto</li>
+                    <li class="list-item">Keydeath: Any death with a key, not just red coins after a CP</li>
+                    <li class="list-item">Kaizo block: Any scenario where you died & if there wasn't a kaizo block, you would have survived</li>
+                    <li class="list-item">Yolo: blind jump off a ledge with the possibility that there will be somewhere to land. (Not just jumping in a pit). Shouting yolo is recommended but not required</li>
+                    <li class="list-item">Softlock: reasonable attempt to verify there is no hidden block / p switch / boo etc to kill you</li>
+                    <li class="list-item">Squish</li>
+                    <li class="list-item">Pit: (just jump in a pit)</li>
+                    <li class="list-item">Door: Door or Pipe that leads to immediate death /softlock with no way to advance</li>
+                    <li class="list-item">Lava</li>
+                    <li class="list-item">Poison</li>
+                </ul>
+
+
+            </div>
+        </div>
+
+        <div id="shift" class="col-1"></div>
+        <div id="Modbox" class="card col-5">
+            <p>
+            Login to use the tracker on this website to track your run. <br />
+            I do not ask for any personal/private information or permissions, just asking Twitch to verify you are you.
+            </p>
+            @{  
+                Html.RenderPartial("_Login");  
+            }   
+        </div>
+    </div>
+    <br />
+</div>
+

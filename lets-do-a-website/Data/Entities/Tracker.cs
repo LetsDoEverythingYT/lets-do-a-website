@@ -9,6 +9,7 @@ namespace lets_do_a_website.Data.Entities
         public int key { get; set; }    
         public string? Id { get; set; }
         public DateTime LastUsed { get; set; }
+
         [NotMapped]
        public Dictionary<int,DeathWay>? DeathWays { get; set; } 
 
@@ -26,5 +27,26 @@ namespace lets_do_a_website.Data.Entities
             }
         }
 
+        public int DeathCount()
+        {
+
+            var deaths = "";
+            var deathCount = 0;
+            foreach(var d in DeathWays!.Values)
+    {
+                if (d.Active)
+                {
+                    deaths += "1";
+                }
+                else
+                {
+                    deaths += "0";
+                    deathCount++;
+                }
+
+            }
+
+            return DeathWays.Where( d => d.Value.Active == false).Count();
+        }
     }
 }

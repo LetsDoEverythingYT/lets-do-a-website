@@ -6,8 +6,157 @@
     {
         settings = new UserSettings();
     }
+    var match = ViewData["match"] as Match;
+    var invites = ViewData["invites"] as List<Invite>;
 }
 @{ViewData["Title"] = "50 Ways to Die";}
+
+
+@if(match is not null && invites.Count() > 0)
+{
+    @:You have pending invites, you must exit your match to accept.
+}
+else {
+@foreach(var i in invites)
+{
+    @:You have been invited to join a match by @(i.HostStreamer). 
+    
+        <form method="post" asp-controller="WTD" asp-action="AcceptInvite" class="d-inline">
+            
+        <input type="hidden" name="guestStreamer" value="@Model.Id" />
+        <input type="hidden" name="matchId" value="@i.MatchId" />
+        <button type="submit" name="submittything" value="Accept">Accept</button>
+        </form>
+        @:&nbsp;| &nbsp;
+        
+        <form method="post" asp-controller="WTD" asp-action="DeclineInvite" class="d-inline">
+        <input type="hidden" name="guestStreamer" value="@Model.Id" />
+        <input type="hidden" name="matchId" value="@i.MatchId" />
+        <button type="submit" name="submittything" value="DECLINE">DECLINE</button>
+        </form>
+    <br />
+}
+}
+
+<div id="matchbox-20" class="p-3 mb-2 alert alert-primary ">
+   
+    @if (match is null)
+    {
+
+        <form method="post" asp-controller="WTD" asp-action="EditMatch">
+        <input type="hidden" name="hostStreamer" value="@Model.Id" />
+        <input type="hidden" value="null" id="guest-null" name="guestStreamer">
+        <button id="creatematch" class="btn btn-success" type="submit" name="action2" value="create">Create Match</button>
+        To race against other streamers, their score will be put on your tracker overlay. Agree on your own penalties/bonuses, suggestions at bottom of page
+        </form>
+    } else if (match.Streamer.Equals(settings.Name))
+    {
+        <form method="post" asp-controller="WTD" asp-action="EditMatch">
+        <input type="hidden" name="hostStreamer" value="@Model.Id" />
+        <input type="hidden" value="null" id="guest-null" name="guestStreamer">
+        <button id="deletematch" class="btn btn-success" type="submit" name="action2" value="delete">Delete Match</button>
+        To accept another invite, or remove all these text boxes, delete your current match
+        </form>
+    } else
+    {
+        <form method="post" asp-controller="WTD" asp-action="LeaveMatch">
+        <input type="hidden" name="guest" value="@Model.Id" />
+        <button id="deletematch" class="btn btn-success" type="submit" name="action2" value="leave">Leave Match</button>
+        To say good bye to @match.Streamer and all their friends
+        </form>
+    }
+</div>
+    
+@if(match != null && match.Streamer.Equals(settings.Name)) 
+{
+<div id="matchbox-20" class="p-3 mb-2 alert alert-primary ">
+
+        <div class="row">
+            @{
+                var lastone = true;
+            }   
+            @for(var i = 0; i<9;i++) 
+            {
+
+                if ((i % 3) == 0)
+                {
+                    @:<div class="col-3">
+                }
+
+                MatchEntry entry = match.Entries.ElementAtOrDefault(i);
+                if(entry!=null)
+                {
+                    
+                    <form method="post" asp-controller="WTD" asp-action="EditMatch">
+                    <div class="input-group">
+                        <input type="hidden" name="hostStreamer" value="@Model.Id" />
+                        <input type="text" class="form-control" value="@entry.Name" id="guest-@i" name="guestStreamer">
+                        <button class="btn btn-outline-dark btn-warning" type="submit" title="Remove" name="action2" value="remove" @(entry.Name.Equals(Model.Id) ? "disabled" : "")>Remove</button>
+                        
+                        @if(entry.Status == 1)
+                        {
+                            @:&nbsp;Invite Sent
+                        }
+                        @if(entry.Status == 2)
+                        {
+                            @:&nbsp;Invite Rejected
+                        }
+                    </div>
+                    </form>
+
+                } else
+                {
+                    if(lastone)
+                    {
+                        lastone = false;
+
+                        <form method="post" asp-controller="WTD" asp-action="EditMatch">
+                        <div class="input-group">
+                            <input type="hidden" name="hostStreamer" value="@Model.Id" />
+                            <input type="text" class="form-control" value="" id="guest-@i" name="guestStreamer">
+                            <button class="btn btn-outline-dark" type="submit" title="Add" name="action2" value="add">Add</button>
+                        </div>
+                        </form>
+                
+                    } else {
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="" id="guest1" name="guestStreamer">
+                            <button class="btn btn-outline-dark" type="submit" title="Add" disabled>Add</button>
+                        </div>
+                    }
+                }
+
+                if((i % 3) == 2)
+                {
+                        @:</div>
+                }
+            }
+        </div>
+</div>
+
+@*Only give the leader the ability to +Random for now*@
+
+
+<div>
+      These buttons to be made functional in an update coming to a website near you soon
+</div>
+<div class="d-flex justify-content-around">
+        @foreach(var e in match.Entries)
+        {
+            if(e.Status == 3)
+            {
+                @*<div id="rand-@e.Id" class="btn btn-success" onclick="addRand('@e.Name')">+1 to @e.Name</div>*@
+                <div id="rand-@e.Id" class="btn btn-secondary">+1 to @e.Name</div>
+            }
+        }
+
+    @*<div id="undo" class="btn btn-success" onclick="addRand('-1')">+1 to RANDOM</div>*@
+    <div id="undo" class="btn btn-secondary">+1 to RANDOM</div>
+    <br>
+</div>
+
+}
+
 
 <div class="container navbar navbar-expand-sm">
     <div class="navbar-brand">You have died</div>
@@ -49,7 +198,8 @@
                 else if (settings.TrackerOnDeath == 3) //gray
             {
                 var gray = d.Active ? 0 : 100;
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray)">
+                var gray2 = d.Active ? 100 : 65;
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
             }
                 else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
             {
@@ -90,7 +240,8 @@
                 else if (settings.TrackerOnDeath == 3) //gray
                 {
                     var gray = d.Active ? 0 : 100;
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray)">
+                    var gray2 = d.Active ? 100 : 65;
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
                 }
                 else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
                 {
@@ -131,7 +282,8 @@
                 else if (settings.TrackerOnDeath == 3) //gray
                 {
                     var gray = d.Active ? 0 : 100;
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray)">
+                    var gray2 = d.Active ? 100 : 65;
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
                 }
                 else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
                 {
@@ -172,7 +324,8 @@
             else if (settings.TrackerOnDeath == 3) //gray
             {
                 var gray = d.Active ? 0 : 100;
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray)">
+                var gray2 = d.Active ? 100 : 65;
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
             }
             else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
             {
@@ -223,15 +376,27 @@
         <div class="col">
         Overlay page, on death pics should:<br />
         <input type="radio" id="O1" name="overlay" value="1" @(settings.OverlayOnDeath == 1 ? "checked" : "")>
-        <label for="O1">Remove w/wrap</label><br>
+        <label for="O1">Remove</label><br>
         <input type="radio" id="O2" name="overlay" value="2" @(settings.OverlayOnDeath == 2 ? "checked" : "")>
         <label for="O2">Grayscale</label><br>
         <input type="radio" id="O3" name="overlay" value="3" @(settings.OverlayOnDeath == 3 ? "checked" : "")>
         <label for="O5">Big X</label><br>
         </div>
+        
+        <div class="col">
+        Overlay page, in a match:<br />
+        <input type="radio" id="OM1" name="overlayMatch" value="1" @(settings.OverlayMatchScores == 1 ? "checked" : "")>
+        <label for="OM1">Show opponent scores</label><br>
+        <input type="radio" id="OM2" name="overlayMatch" value="2" @(settings.OverlayMatchScores == 2 ? "checked" : "")>
+        <label for="OM2">Do not show scores</label><br>
+        </div>
         <br />
         <input type="hidden" name="id" value="@Model.Id" />
-        <input type="submit" value="Submit">
+        
+        </div>
+        <div class="row">
+            @*make this smaller idk why col-10 didnt work*@
+            <input type="submit" value="Submit">
         </div>
     </form>
 </div>
@@ -240,6 +405,7 @@
 
 @{
     var overlay1 = Url.Action("Overlay","WTD", new { id = Model.Id},"https");
+    var overlay2 = Url.Action("Overlay","WTD", new { id = Model.Id, id2=2},"https");
 }
 <br />
 
@@ -258,11 +424,11 @@ Standard  overlay. Import to OBS as a browser source. Set page width to 1920 or 
 
 
 
-Monopolyboard style overlay (not working yet, hit me up if you know how to css it)
+Monopolyboard style overlay 
 <div class="input-group">
-    <input type="text" class="form-control" value="@overlay1" id="copy-input">
-    <button class="btn btn-outline-dark btn-secondary" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(3)">Copy</button>
-    <a class="btn btn-outline-dark btn-lg  btn-secondary" asp-action="Overlay" asp-route-id="@Model.Id">Go</a>
+    <input type="text" class="form-control" value="@overlay2" id="overlay-2">
+    <button class="btn btn-outline-dark" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(2)">Copy</button>
+    <a class="btn btn-outline-dark btn-lg" asp-action="Overlay" asp-route-id="@Model.Id" asp-route-id2="2">Go</a>
 </div>
 </div>
 
@@ -364,12 +530,13 @@ Monopolyboard style overlay (not working yet, hit me up if you know how to css i
             {
                 if (ele.style.cssText.includes("grayscale(0)"))
                 {
-                    ele.style = "width:80px;display:inline;filter:grayscale(100)";
+                    ele.style = "width:80px;display:inline;filter:grayscale(100) brightness(65%)";
                 } else {
                     undoDeath = true;
-                    ele.style = "width:80px;display:inline;filter:grayscale(0)";
+                    ele.style = "width:80px;display:inline;filter:grayscale(0) brightness(100%)";
                 }
             }
+         
             else if (TrackerOnDeath == 4) //delete
             {
                 if (ele.style.cssText.includes("visible")) 
@@ -421,6 +588,10 @@ Monopolyboard style overlay (not working yet, hit me up if you know how to css i
             conn.invoke("NotifyRefresh", { trackerId: "@Model.Id", deathId: parseInt(0) });
         }
 
+        function addRand(e) {
+            conn.invoke("NotifyRandom", { trackerId: "@Model.Id", player: e });
+        }
+
         function undoMove(t) {
             if (lastMove == 0)
                 return;
@@ -458,6 +629,14 @@ Monopolyboard style overlay (not working yet, hit me up if you know how to css i
         recalc();
         var conn = 0;
         initializeSignalRConnection("@Model.Id");
+
+
+        
+        conn.on("ReceiveRand", ({deathId}) => {
+            toggleDeath("@Model.Id", deathId); 
+            //temporary pop up saying what was re-added?
+        });
+
 
         //console is telling me conn.start isn't asynch even though the doc says it is so whatever we will hack it.
         function delay(time) {

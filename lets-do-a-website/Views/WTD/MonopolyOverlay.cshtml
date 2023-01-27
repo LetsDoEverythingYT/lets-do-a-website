@@ -2,7 +2,9 @@
 @model Tracker
 @{
     var settings = ViewData["settings"] as UserSettings;
-    var match = ViewData["match"] as Match;
+    var ways = Model.DeathWays!.Values.ToArray();
+    var colBreaks2 = new List<int> { 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43};
+    var colBreaks = new List<int> { 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44};
 
 }
     
@@ -15,36 +17,9 @@
 <body>
 
 
-    <div id="divvydivdiv" class="container-fluid" style="margin-left:0px;gap:15px;">
-        <div id="rowyrowrow" class="row d-flex flex-row  g-0">
-
-            @if(settings.OverlayMatchScores ==1 && match is not null)
-            {
-                foreach(var entry in match.Entries)
-                {
-                    if (entry.Name.Equals(settings.Name))
-                        continue;
-                    if (entry.Status != 3)
-                        continue;
-                   <span id="score-panel" class="position-relative d-inline-block" style="background:url(/img/50wtd/obg.png); width:160px; height:80px;top:1px">
-                       <span id="profile-pic" class="position-absolute" style="left:12px; top:10px">
-                        @if("none".Equals(entry.ProfileImage))
-                        {
-                            <img class="rounded-circle shadow-lg" src="~/img/twag.png" width="60">
-                        } 
-                        else
-                        {
-                            <img class="rounded-circle shadow-lg" src="@entry.ProfileImage" width="60">
-
-                        }
-                        </span>
-                        <span id="CountBox-@entry.Name" class="position-absolute" style="font-size:50px;left:90px; top:1px">00</span>
-                    </span>
-
-
-                }
-            }
-
+<table>
+    <tr>
+        <td colspan="2">
             <span id="score-panel" class="position-relative d-inline-block" style="background:url(/img/50wtd/obg.png); width:160px; height:80px;top:1px">
                 <span id="profile-pic" class="position-absolute" style="left:12px; top:10px">
                 @if("none".Equals(settings.ProfileImage))
@@ -57,25 +32,33 @@
 
                 }
                 </span>
-                <span id="CountBox-@settings.Name" class="position-absolute" style="font-size:50px;left:90px; top:1px">00</span>
+                <span id="CountBox-@(settings.Name)" class="position-absolute" style="font-size:50px;left:90px; top:1px">00</span>
             </span>
+        </td>
 
-        
-   
-        @foreach (var d in Model.DeathWays!.Values)
-        {
+            @for (var i =0; i<ways.Length; i++) {
 
-            
+                if (colBreaks.Contains(i))
+                {
+                    @:</tr><tr>
+                } else if(colBreaks2.Contains(i)) {
+                    @:<td colspan="22"></td>
+                }
+                
+                var d = ways[i];
 
-            if (settings.OverlayOnDeath == 1 && d.Active) //disappear on death
+     @:<td style="padding: 3px 2px 3px 2px;">
+
+         if (settings.OverlayOnDeath == 1) //disappear on death
             {
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="padding:2px 0;width:80px" />
+                var visibility = d.Active ? "visibility:visible" : "visibility:hidden";
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="width:76px;@visibility" />
             } 
             else if (settings.OverlayOnDeath == 2) // gray on death
             {
                     var gray = d.Active ? 0 : 100;
                     var gray2 = d.Active ? 100 : 65;
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="padding:2px 0;width:80px;filter:grayscale(@gray) brightness(@(gray2)%)" />
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="width:76px;filter:grayscale(@gray) brightness(@(gray2)%)" />
 
             }
             else if (settings.OverlayOnDeath == 3) // X on death
@@ -83,12 +66,43 @@
                 var hidden = d.Active ? "visibility:hidden" : "";
                 <div class="col d-flex flex-grow-0 flex-shrink-0">
                     <span class="position-absolute">
-                        <img id="noimg-@d.Id" src="~/img/50wtd/no.png" style="padding:2px 0;@hidden" />
+                        <img id="noimg-@d.Id" src="~/img/50wtd/no.png" style="width:76px;@hidden" />
                     </span> 
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="padding:2px 0;" />
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" style="width:76px" />
                 </div>
             }
-        }
+                @:</td>
+
+            }
+                  
+            
+            <td colspan="2">
+            <span id="score-panel2" class="position-relative d-inline-block" style="background:url(/img/50wtd/obg.png); width:160px; height:80px;top:3px">
+                <span id="profile-pic2" class="position-absolute" style="left:12px; top:10px">
+                @if("none".Equals(settings.ProfileImage))
+                {
+                    <img class="rounded-circle shadow-lg" src="~/img/twag.png" width="60">
+                } 
+                else
+                {
+                    <img class="rounded-circle shadow-lg" src="@settings.ProfileImage" width="60">
+
+                }
+                </span>
+                <span id="CountBox2-@(settings.Name)" class="position-absolute" style="font-size:50px;left:90px; top:1px">00</span>
+            </span>
+        </td>
+    </tr>
+</table>
+
+
+    <div id="divvydivdiv" class="container-fluid" style="margin-left:0px;gap:15px;">
+        <div id="rowyrowrow" class="row d-flex flex-row  g-0">
+
+        
+
+
+        
 
         </div>
     </div>
@@ -132,17 +146,18 @@
             
             @if (settings.OverlayOnDeath == 1) //disappear on death
             { 
-                @:document.getElementById("img-" + deathId).remove();
+                @:var i =document.getElementById("img-" + deathId);
+                @:i.style = "width:76px;visibility:hidden";
             }
             else if (settings.OverlayOnDeath == 2) // gray on death
             {
                 @:var i =document.getElementById("img-" + deathId);
-                @:i.style = "padding:2px 0;width:80px;filter:grayscale(100) brightness(65%)";
+                @:i.style = "width:76px;filter:grayscale(100) brightness(65%)";
             } 
             else if (settings.OverlayOnDeath == 3) // X on death
             {
                @:var i =document.getElementById("noimg-" + deathId);
-               @:i.style = "padding:2px 0;";
+               @:i.style = "width:76px";
             }
 
 
@@ -156,22 +171,19 @@
 
             @if (settings.OverlayOnDeath == 1) //disappear on death
             {
-                @:var i = new Image();
-                @:i.id="img-" + deathId;
-                @:i.src = "/img/50wtd/" + deathId + ".png";
-                @:i.style = "padding:2px 0;width:80px";
-                @:document.getElementById("rowyrowrow").appendChild(i);
+                @:var i =document.getElementById("img-" + deathId);
+                @:i.style = "width:76px;visibility:visible";
             }
             else if (settings.OverlayOnDeath == 2) // gray on death
             {
                 @:var i = document.getElementById("img-" + deathId);
-            @:i.style = "padding:2px 0;width:80px;filter:grayscale(0) brightness(100%)";
+                @:i.style = "width:76px;filter:grayscale(0) brightness(100%)";
             
             }
             else if (settings.OverlayOnDeath == 3) // X on death
             {
                @:var i =document.getElementById("noimg-" + deathId);
-               @:i.style = "padding:2px 0;visibility:hidden";
+               @:i.style = "width:76px;visibility:hidden";
             }
 
 
@@ -184,7 +196,6 @@
             location.reload();
         });
 
-
         conn.on("CounterUpdate", ({trackerId, deathId, deathCount}) => {
             console.log("done hur" + trackerId + deathCount);
             recalc(trackerId, deathCount);
@@ -195,19 +206,12 @@
             if (deathCount < 10)
                 dfiller = "0";
 
-            @*Dynamically add new match members here, or force refresh? Refresh is easier so lets do that & think about negative side effects*@
-            @if(settings.OverlayMatchScores ==1 && match is not null)
-            {
-                @:if (document.getElementById("CountBox-" + trackerId) == null)
-                    @:location.reload();    
-            
-            }
-
                 
             if (deathCount < 0)
                 location.reload();
-
+                
             document.getElementById("CountBox-" + trackerId).innerText = "" + dfiller + deathCount;
+            document.getElementById("CountBox2-" + trackerId).innerText = "" + dfiller + deathCount;
         }
 
 

@@ -11,6 +11,9 @@ namespace lets_do_a_website.Data
         public DbSet<Tracker> Trackers { get; set; }
         public DbSet<Permissions> Permissions { get; set; }
         public DbSet<RunStats> RunStats { get; set; }
+        public DbSet<Match> Matches { get; set; }
+        public DbSet<Invite> Invites { get; set; }
+
 
         public WTDContext(DbContextOptions<WTDContext> ctx) : base(ctx)
         {
