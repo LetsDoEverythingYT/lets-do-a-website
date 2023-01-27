@@ -28,16 +28,13 @@ namespace lets_do_a_website.Hubs
             tracker.DeathCount = t.DeathCount();
 
             await Clients.OthersInGroup($"tracker-{tracker.TrackerId}").SendAsync("ReceiveNewDeath", tracker);
-    
+            
             var m = _repo.GetMatchById(_repo.GetUserSettings(tracker.TrackerId).MatchId);
 
             if (m != null)
             {
                 foreach(var entry in m.Entries)
                 {
-                    if (entry.Name.Equals(tracker.TrackerId))
-                        continue;
-
                     await Clients.Group($"tracker-{entry.Name}").SendAsync("CounterUpdate", tracker);
                 }
             }
@@ -52,8 +49,19 @@ namespace lets_do_a_website.Hubs
             if (d == null) { return; }
             d.Active = true;
             t.LastUsed = DateTime.UtcNow;
+            tracker.DeathCount = t.DeathCount();
 
             await Clients.OthersInGroup($"tracker-{tracker.TrackerId}").SendAsync("ReceiveUndo", tracker);
+
+            var m = _repo.GetMatchById(_repo.GetUserSettings(tracker.TrackerId).MatchId);
+
+            if (m != null)
+            {
+                foreach (var entry in m.Entries)
+                {
+                    await Clients.Group($"tracker-{entry.Name}").SendAsync("CounterUpdate", tracker);
+                }
+            }
         }
 
         public async Task NotifyRefresh(TrackerNotify Tracker)
@@ -87,7 +95,7 @@ namespace lets_do_a_website.Hubs
             {
                 foreach (var entry in m.Entries)
                 {
-                    if (entry.Name.Equals(trackerId) || entry.Status != 3)
+                    if (entry.Status != 3)
                         continue;
                     var tracker = new TrackerNotify() { TrackerId = entry.Name, DeathId = 0, DeathCount = _trackerData.GetById(entry.Name).DeathCount() };
                     await Clients.Group($"tracker-{trackerId}").SendAsync("CounterUpdate", tracker);

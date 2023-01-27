@@ -64,8 +64,11 @@ namespace lets_do_a_website.Controllers
             }
             ViewData["settings"] = u;
             ViewData["match"] = _repo.GetMatchById(u.MatchId);
-            if(id2 == "2")
+
+            if (id2 == "2")
                 return PartialView("MonopolyOverlay", _trackerData.GetById(id, false));
+            if (id2 == "3")
+                return PartialView("MatchOnlyOverlay", _trackerData.GetById(id, false));
 
             return PartialView("Overlay", _trackerData.GetById(id, false));
 

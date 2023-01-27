@@ -1,0 +1,114 @@
+﻿@using lets_do_a_website.Data.Entities;
+@model Tracker
+@{
+    var settings = ViewData["settings"] as UserSettings;
+    var match = ViewData["match"] as Match;
+}
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+
+
+    <div id="divvydivdiv" class="container-fluid" style="margin-left:0px;gap:15px;">
+        <div id="rowyrowrow" class="row d-flex flex-row  g-0">
+
+            @if(match is not null)
+            {
+                foreach(var entry in match.Entries)
+                {
+                    if (entry.Status != 3)
+                        continue;
+                   <span id="score-panel" class="position-relative d-inline-block" style="background:url(/img/50wtd/obg.png); width:160px; height:80px;top:1px">
+                       <span id="profile-pic" class="position-absolute" style="left:12px; top:10px">
+                        @if("none".Equals(entry.ProfileImage))
+                        {
+                            <img class="rounded-circle shadow-lg" src="~/img/twag.png" width="60">
+                        } 
+                        else
+                        {
+                            <img class="rounded-circle shadow-lg" src="@entry.ProfileImage" width="60">
+
+                        }
+                        </span>
+                        <span id="CountBox-@entry.Name" class="position-absolute" style="font-size:50px;left:90px; top:1px">00</span>
+                    </span>
+
+
+                }
+            }
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+
+        function initializeSignalRConnection(t) {
+            var conn = new signalR.HubConnectionBuilder()
+                .withUrl("/trackerhub?tracker=" + t)
+                .withAutomaticReconnect()
+                .build();
+
+            try {
+                conn.start();
+            } catch (err) {
+                console.log(err);
+            }
+
+            conn.onreconnecting((error) => {
+                console.log("recon");
+            });
+            conn.onreconnected((error) => {
+                console.log("ded");
+            });
+
+            return conn;
+        }
+
+
+        const conn = initializeSignalRConnection("@Model.Id");
+
+
+        conn.on("ForceRefresh", () => {
+            location.reload();
+        });
+
+
+        conn.on("CounterUpdate", ({trackerId, deathId, deathCount}) => {
+            console.log("done hur" + trackerId + deathCount);
+            recalc(trackerId, deathCount);
+        });
+
+        function recalc(trackerId, deathCount) {
+            var dfiller="";
+            if (deathCount < 10)
+                dfiller = "0";
+
+            @*Dynamically add new match members here, or force refresh? Refresh is easier so lets do that & think about negative side effects*@
+            @if(match is not null)
+            {
+                @:if (document.getElementById("CountBox-" + trackerId) == null)
+                    @:location.reload();    
+            
+            }
+
+                
+            if (deathCount < 0)
+                location.reload();
+
+            document.getElementById("CountBox-" + trackerId).innerText = "" + dfiller + deathCount;
+        }
+
+
+
+    
+    </script>
+</body>
+</html>

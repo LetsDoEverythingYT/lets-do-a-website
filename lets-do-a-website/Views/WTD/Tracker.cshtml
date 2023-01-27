@@ -406,6 +406,7 @@ else {
 @{
     var overlay1 = Url.Action("Overlay","WTD", new { id = Model.Id},"https");
     var overlay2 = Url.Action("Overlay","WTD", new { id = Model.Id, id2=2},"https");
+    var overlay3 = Url.Action("Overlay","WTD", new { id = Model.Id, id2=3},"https");
 }
 <br />
 
@@ -429,6 +430,14 @@ Monopolyboard style overlay
     <input type="text" class="form-control" value="@overlay2" id="overlay-2">
     <button class="btn btn-outline-dark" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(2)">Copy</button>
     <a class="btn btn-outline-dark btn-lg" asp-action="Overlay" asp-route-id="@Model.Id" asp-route-id2="2">Go</a>
+</div>
+
+
+Match scores only
+<div class="input-group">
+    <input type="text" class="form-control" value="@overlay3" id="overlay-3">
+    <button class="btn btn-outline-dark" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(3)">Copy</button>
+    <a class="btn btn-outline-dark btn-lg" asp-action="Overlay" asp-route-id="@Model.Id" asp-route-id2="3">Go</a>
 </div>
 </div>
 
