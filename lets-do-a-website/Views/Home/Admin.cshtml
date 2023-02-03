@@ -1,7 +1,7 @@
 ﻿@using lets_do_a_website.Data;
 @using lets_do_a_website.Data.Entities;
 
-@model ITrackerData
+@model WTDRepo
 
 This page is so I can look at the memory useage of the website. It's very advanced stuff. Don't look at it it's not for you
 
@@ -11,7 +11,7 @@ This page is so I can look at the memory useage of the website. It's very advanc
 
 Active trackers:
 @{
-    IEnumerable<Tracker> trackers = Model.GetAll();
+    IEnumerable<Tracker> trackers = Model.GetAllTrackers();
 }
 
 
@@ -19,21 +19,9 @@ Active trackers:
 
 @foreach (var t in trackers)
 {
-    var deaths = "";
-    var deathCount = 0;
-    @foreach(var d in t.DeathWays!.Values)
-    {
-        if(d.Active)
-        {
-            deaths += "1";
-        } 
-        else
-        {
-            deaths += "0";
-            deathCount++;
-        }
-
-    }
+    var deaths = t.DataBits;
+    var deathCount = t.DeathCount();
+    
     <div class="row">
         <div class="col-2">@t.Id</div>
         <div class ="col-2">@t.LastUsed</div>

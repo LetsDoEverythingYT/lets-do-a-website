@@ -10,16 +10,12 @@ namespace lets_do_a_website.Controllers
 {
     public class WTDController : Controller
     {
-        private readonly ITrackerData _trackerData;
         private readonly WTDRepo _repo;
 
-        public WTDController(ITrackerData trackerData, WTDRepo repo)
+        public WTDController(WTDRepo repo)
         {
-            _trackerData = trackerData;
             _repo = repo;
         }
-
-
         
         public IActionResult Index(string returnUrl = "/WTD")
         {
@@ -52,7 +48,9 @@ namespace lets_do_a_website.Controllers
             ViewData["settings"] = settings;
             ViewData["match"] = _repo.GetMatchById(settings.MatchId);
             ViewData["invites"] = _repo.GetAllInvites(id);
-            return View(_trackerData.GetById(id, true));
+            var t = _repo.GetTracker(id, true, true);
+            _repo.SaveAll();
+            return View(t);
         }
 
         public IActionResult Overlay(string id, string id2)
@@ -64,13 +62,14 @@ namespace lets_do_a_website.Controllers
             }
             ViewData["settings"] = u;
             ViewData["match"] = _repo.GetMatchById(u.MatchId);
+            var tracker = _repo.GetTracker(id, false, true);
 
             if (id2 == "2")
-                return PartialView("MonopolyOverlay", _trackerData.GetById(id, false));
+                return PartialView("MonopolyOverlay", tracker);
             if (id2 == "3")
-                return PartialView("MatchOnlyOverlay", _trackerData.GetById(id, false));
+                return PartialView("MatchOnlyOverlay", tracker);
 
-            return PartialView("Overlay", _trackerData.GetById(id, false));
+            return PartialView("Overlay", tracker);
 
         }
 
@@ -90,13 +89,15 @@ namespace lets_do_a_website.Controllers
             }
 
 
-            var rs = new RunStats(id, DateTime.UtcNow, _trackerData.Stringify(id));
+            var rs = new RunStats(id, DateTime.UtcNow, _repo.GetTracker(id, false).DataBits);
             
             _repo.AddRunStats(rs);
+
+            _repo.RemoveTracker(id);
+            _repo.AddTracker(id);
             _repo.SaveAll();
 
-            _trackerData.RemoveTracker(id);
-            _trackerData.AddTracker(id);
+
             return RedirectToAction("Tracker", new { id });
         }
 

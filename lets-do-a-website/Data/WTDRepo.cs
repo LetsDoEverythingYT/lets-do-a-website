@@ -1,5 +1,7 @@
 ﻿using lets_do_a_website.Data.Entities;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 using System.Linq;
+using System.Text.Json;
 using static System.Net.WebRequestMethods;
 
 namespace lets_do_a_website.Data
@@ -7,10 +9,31 @@ namespace lets_do_a_website.Data
     public class WTDRepo
     {
         private readonly WTDContext _ctx;
+        private readonly Tracker defaultTracker;
 
         public WTDRepo(WTDContext ctx)
         {
             _ctx = ctx;
+
+            var filePath = "Data/ways.json";
+
+            var json = System.IO.File.ReadAllText(filePath);
+
+            var ways = JsonSerializer.Deserialize<IEnumerable<DeathWay>>(json)!.ToList();
+
+            var deathMap = new Dictionary<int, DeathWay>();
+            foreach (var way in ways)
+            {
+                deathMap.Add(way.Id, way);
+            }
+
+            defaultTracker = new Tracker
+            {
+                Id = "default",
+                DeathWays = deathMap,
+                //DataBits = new string('1', ways.Count())
+                DataBits = new string('1', 100) //Forgot I have empty spaces in my ID map lol
+            };
         }
 
         public IEnumerable<Permissions> GetAllMods(string streamer)
@@ -64,6 +87,44 @@ namespace lets_do_a_website.Data
             _ctx.UserSettings.Add(u);  
             return u;
         }
+
+        public Tracker AddTracker(string id)
+        {
+            Tracker t = new Tracker(defaultTracker);
+            t.Id = id;
+            _ctx.Trackers.Add(t);
+            return t;
+        }
+        public Tracker GetTracker(string id, bool createIfDNE=false, bool buildDeathWays=false)
+        {
+            var t = _ctx.Trackers.Where(x => x.Id.Equals(id)).FirstOrDefault();
+            if (t == null)
+            {
+                t = new Tracker(defaultTracker);
+                t.Id = id;
+
+                if (createIfDNE)
+                {
+                    AddTracker(id);
+                }
+            } else if(buildDeathWays)
+            {
+                t.RefreshDeaths(defaultTracker);
+            }
+            return t;
+        }
+        public IEnumerable<Tracker> GetAllTrackers()
+        {
+            return from t in _ctx.Trackers select t;
+        }
+
+        public void RemoveTracker(string id)
+        {
+            _ctx.Trackers.Remove(GetTracker(id));
+        }
+
+
+
 
         public Match AddMatch(string streamer)
         {

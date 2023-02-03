@@ -13,12 +13,10 @@ namespace lets_do_a_website.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ITrackerData TrackerData;
         private readonly WTDRepo _repo;
 
-        public HomeController(ITrackerData trackerData, WTDRepo repo)
+        public HomeController(WTDRepo repo)
         {
-            TrackerData = trackerData;
             _repo = repo;   
         }
 
@@ -28,7 +26,7 @@ namespace lets_do_a_website.Controllers
         }
         public IActionResult Admin()
         {
-            return View(TrackerData);
+            return View(_repo);
         }
         public IActionResult Changelog()
         {

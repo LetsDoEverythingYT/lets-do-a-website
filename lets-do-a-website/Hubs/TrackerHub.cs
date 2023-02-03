@@ -9,77 +9,73 @@ namespace lets_do_a_website.Hubs
     public class TrackerHub:Hub
     {
 
-        private readonly ITrackerData _trackerData;
         private readonly WTDRepo _repo;
-        public TrackerHub(ITrackerData trackerData, WTDRepo repo)
+        public TrackerHub(WTDRepo repo)
         {
-            _trackerData = trackerData;
             _repo = repo;
         } 
 
-        public async Task NotifyDeath(TrackerNotify tracker)
+        public async Task NotifyDeath(TrackerNotify notification)
         {
-            var t = _trackerData.GetById(tracker.TrackerId);
-            if (t == null) { return; }
-            var d = t.DeathWays!.GetValueOrDefault(tracker.DeathId, null);
-            if (d == null) { return; }
-            d.Active = false;
-            t.LastUsed= DateTime.UtcNow;
-            tracker.DeathCount = t.DeathCount();
+            var tracker = _repo.GetTracker(notification.TrackerId);
+            if (tracker == null) { return; }
 
-            await Clients.OthersInGroup($"tracker-{tracker.TrackerId}").SendAsync("ReceiveNewDeath", tracker);
+            tracker.addDeath(notification.DeathId);
+            notification.DeathCount = tracker.DeathCount();
+
+            _repo.SaveAll();
+
+            await Clients.OthersInGroup($"tracker-{notification.TrackerId}").SendAsync("ReceiveNewDeath", notification);
             
-            var m = _repo.GetMatchById(_repo.GetUserSettings(tracker.TrackerId).MatchId);
+            var m = _repo.GetMatchById(_repo.GetUserSettings(notification.TrackerId).MatchId);
 
             if (m != null)
             {
                 foreach(var entry in m.Entries)
                 {
-                    await Clients.Group($"tracker-{entry.Name}").SendAsync("CounterUpdate", tracker);
+                    await Clients.Group($"tracker-{entry.Name}").SendAsync("CounterUpdate", notification);
                 }
             }
 
 
         }
-        public async Task NotifyUndo(TrackerNotify tracker)
+        public async Task NotifyUndo(TrackerNotify notification)
         {
-            var t = _trackerData.GetById(tracker.TrackerId);
-            if (t == null) { return; }
-            var d = t.DeathWays!.GetValueOrDefault(tracker.DeathId, null);
-            if (d == null) { return; }
-            d.Active = true;
-            t.LastUsed = DateTime.UtcNow;
-            tracker.DeathCount = t.DeathCount();
+            var tracker = _repo.GetTracker(notification.TrackerId);
+            if (tracker == null) { return; }
 
-            await Clients.OthersInGroup($"tracker-{tracker.TrackerId}").SendAsync("ReceiveUndo", tracker);
+            tracker.removeDeath(notification.DeathId);
+            notification.DeathCount = tracker.DeathCount();
 
-            var m = _repo.GetMatchById(_repo.GetUserSettings(tracker.TrackerId).MatchId);
+            await Clients.OthersInGroup($"tracker-{notification.TrackerId}").SendAsync("ReceiveUndo", notification);
+
+            var m = _repo.GetMatchById(_repo.GetUserSettings(notification.TrackerId).MatchId);
 
             if (m != null)
             {
                 foreach (var entry in m.Entries)
                 {
-                    await Clients.Group($"tracker-{entry.Name}").SendAsync("CounterUpdate", tracker);
+                    await Clients.Group($"tracker-{entry.Name}").SendAsync("CounterUpdate", notification);
                 }
             }
         }
 
-        public async Task NotifyRefresh(TrackerNotify Tracker)
+        public async Task NotifyRefresh(TrackerNotify notification)
         {
-            await Clients.OthersInGroup($"tracker-{Tracker.TrackerId}").SendAsync("ForceRefresh", Tracker);
+            await Clients.OthersInGroup($"tracker-{notification.TrackerId}").SendAsync("ForceRefresh", notification);
         }
 
-        public async Task NotifyRandom(TrackerNotify tracker, string player)
+        public async Task NotifyRandom(TrackerNotify notification, string player)
         {
-            var t = _trackerData.GetById(tracker.TrackerId);
+            var t = _repo.GetTracker(notification.TrackerId);
             if (t == null) { return; }
 
-            var d = t.DeathWays!.GetValueOrDefault(tracker.DeathId, null);
+            var d = t.DeathWays!.GetValueOrDefault(notification.DeathId, null);
             if (d == null) { return; }
             d.Active = false;
             t.LastUsed = DateTime.UtcNow;
 
-            await Clients.OthersInGroup($"tracker-{tracker.TrackerId}").SendAsync("ReceiveNewDeath", tracker);
+            await Clients.OthersInGroup($"tracker-{notification.TrackerId}").SendAsync("ReceiveNewDeath", notification);
         }
 
         public override async Task OnConnectedAsync()
@@ -97,7 +93,7 @@ namespace lets_do_a_website.Hubs
                 {
                     if (entry.Status != 3)
                         continue;
-                    var tracker = new TrackerNotify() { TrackerId = entry.Name, DeathId = 0, DeathCount = _trackerData.GetById(entry.Name).DeathCount() };
+                    var tracker = new TrackerNotify() { TrackerId = entry.Name, DeathId = 0, DeathCount = _repo.GetTracker(entry.Name).DeathCount() };
                     await Clients.Group($"tracker-{trackerId}").SendAsync("CounterUpdate", tracker);
                 }
             }

@@ -1,5 +1,5 @@
 ﻿@using lets_do_a_website.Data.Entities;
-@model Tracker
+@model Tracker 
 @{
     var settings = ViewData["settings"] as UserSettings;
     if (settings == null)
@@ -431,7 +431,7 @@ Monopolyboard style overlay
     <button class="btn btn-outline-dark" type="button" id="copy-button" title="Copy to Clipboard" onclick="copyOverlay(2)">Copy</button>
     <a class="btn btn-outline-dark btn-lg" asp-action="Overlay" asp-route-id="@Model.Id" asp-route-id2="2">Go</a>
 </div>
-
+<br />
 
 Match scores only
 <div class="input-group">
