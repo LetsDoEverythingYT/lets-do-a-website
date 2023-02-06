@@ -127,7 +127,7 @@
         recalc("@Model.Id", deaths);
 
 
-        conn.on("ReceiveNewDeath", ({ trackerId, deathId, deathCount }) => {
+        conn.on("ReceiveNewDeath", ({ trackerId, deathId, deathCount, forcedFrom }) => {
             
             
             @if (settings.OverlayOnDeath == 1) //disappear on death
@@ -151,7 +151,7 @@
         });
 
 
-        conn.on("ReceiveUndo", ({ trackerId, deathId, deathCount }) => {
+        conn.on("ReceiveUndo", ({ trackerId, deathId, deathCount, forcedFrom }) => {
 
 
             @if (settings.OverlayOnDeath == 1) //disappear on death
@@ -185,8 +185,7 @@
         });
 
 
-        conn.on("CounterUpdate", ({trackerId, deathId, deathCount}) => {
-            console.log("done hur" + trackerId + deathCount);
+        conn.on("CounterUpdate", ({ trackerId, deathId, deathCount, forcedFrom }) => {
             recalc(trackerId, deathCount);
         });
 

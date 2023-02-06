@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using lets_do_a_website.Migrations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace lets_do_a_website.Data.Entities
@@ -56,6 +57,31 @@ namespace lets_do_a_website.Data.Entities
             DataBits = new string(ch);
             LastUsed = DateTime.UtcNow;
 
+        }
+
+        public int GetRandomDeath()
+        {
+            Random random = new Random();
+            int charCount = DataBits.Length - DataBits.Replace("0", "").Length;
+            int randomOccurence = random.Next(charCount) + 1;
+
+            int count = 0;
+            int index = -1;
+            for (int i = 0; i < DataBits.Length; i++)
+            {
+                if (DataBits[i] == '0')
+                {
+                    count++;
+                }
+
+                if (count == randomOccurence)
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            return index;
         }
 
         //Required because the deathway junk isn't saved in the database

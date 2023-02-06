@@ -47,7 +47,9 @@ namespace lets_do_a_website.Hubs
             tracker.removeDeath(notification.DeathId);
             notification.DeathCount = tracker.DeathCount();
 
-            await Clients.OthersInGroup($"tracker-{notification.TrackerId}").SendAsync("ReceiveUndo", notification);
+            _repo.SaveAll();
+
+            await Clients.Group($"tracker-{notification.TrackerId}").SendAsync("ReceiveUndo", notification);
 
             var m = _repo.GetMatchById(_repo.GetUserSettings(notification.TrackerId).MatchId);
 
@@ -65,17 +67,34 @@ namespace lets_do_a_website.Hubs
             await Clients.OthersInGroup($"tracker-{notification.TrackerId}").SendAsync("ForceRefresh", notification);
         }
 
-        public async Task NotifyRandom(TrackerNotify notification, string player)
+        public async Task ForceUndo(TrackerNotify notification)
         {
-            var t = _repo.GetTracker(notification.TrackerId);
-            if (t == null) { return; }
+            var tracker = _repo.GetTracker(notification.ForcedFrom);
+            if (tracker == null) { return; }
+            var match = _repo.GetMatchById(_repo.GetUserSettings(notification.ForcedFrom).MatchId);
+            if (match == null) { return; }
 
-            var d = t.DeathWays!.GetValueOrDefault(notification.DeathId, null);
-            if (d == null) { return; }
-            d.Active = false;
-            t.LastUsed = DateTime.UtcNow;
+            if(notification.TrackerId.Equals("-1"))
+            {
+                notification.TrackerId = match.GetRandomParticipant();
+            }
 
-            await Clients.OthersInGroup($"tracker-{notification.TrackerId}").SendAsync("ReceiveNewDeath", notification);
+            var target = _repo.GetTracker(notification.TrackerId);
+            if (target == null) { return; }
+            var p = match.getParticipant(notification.TrackerId);
+            if(p == null || p.Status != 3) { return; }
+
+
+            var id = target.GetRandomDeath();
+            if (id == -1) { return; }
+
+            notification.DeathId= id;
+
+            await NotifyUndo(notification);
+
+            await Clients.Group($"tracker-{notification.TrackerId}").SendAsync("ForceComplete", notification);
+            await Clients.Group($"tracker-{notification.ForcedFrom}").SendAsync("ForceComplete", notification);
+
         }
 
         public override async Task OnConnectedAsync()

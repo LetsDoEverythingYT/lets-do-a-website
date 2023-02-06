@@ -29,6 +29,11 @@
         {
             return (Entries.Where(e => e.Name.Equals(guest)).FirstOrDefault());
         }
-
+        public string GetRandomParticipant()
+        {
+            var accepted = Entries.Where(e => e.Status == 3).ToList();
+            var rnd = new Random();
+            return accepted[rnd.Next(accepted.Count)].Name;
+        }
     }
 }

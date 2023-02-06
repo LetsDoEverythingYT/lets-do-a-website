@@ -137,35 +137,33 @@ else {
 @*Only give the leader the ability to +Random for now*@
 
 
-<div>
-      These buttons to be made functional in an update coming to a website near you soon
-</div>
 <div class="d-flex justify-content-around">
         @foreach(var e in match.Entries)
         {
             if(e.Status == 3)
             {
-                @*<div id="rand-@e.Id" class="btn btn-success" onclick="addRand('@e.Name')">+1 to @e.Name</div>*@
-                <div id="rand-@e.Id" class="btn btn-secondary">+1 to @e.Name</div>
+                <div id="rand-@e.Id" class="btn btn-success" onclick="Force('@e.Name')">+1 to @e.Name</div>
             }
         }
 
-    @*<div id="undo" class="btn btn-success" onclick="addRand('-1')">+1 to RANDOM</div>*@
-    <div id="undo" class="btn btn-secondary">+1 to RANDOM</div>
+    <div id="undo" class="btn btn-success" onclick="Force('-1')">+1 to RANDOM</div>
     <br>
 </div>
 
 }
 
-
-<div class="container navbar navbar-expand-sm">
-    <div class="navbar-brand">You have died</div>
-    <div class="navbar-brand" id="deathCount"></div>
-    <div class="navbar-brand">/ 50 ways</div>
-    <div class="navbar-brand" id="encourage"></div>
-</div>
+<br />
+<span class="container fs-4">
+    <span class="d-inline">You have died</span>
+    <span class="d-inline" id="deathCount"></span>
+    <span class="d-inline">/ 50 ways</span>
+    <span class="d-inline" id="encourage"></span>
+</span>
+<br />
 <div id="recon-warning" class="p-3 mb-2 alert alert-danger d-none" data-toggle="collapse">Connection to server lost. Attempting to reconnect, overlay will not update! Changes are not being saved!</div>
 
+<br />
+<div id="force-warning" class="p-3 mb-2 alert alert-primary d-none" data-toggle="collapse">Your death to  has been removed!</div>
 <br />
 
 <div id="Clicksters" class="container gap-2">
@@ -183,29 +181,29 @@ else {
             {
                 var opac = d.Active ? "1" : "0.3"; 
                 
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
             }
                 else if (settings.TrackerOnDeath == 2) //X
             {
                 var hidden = d.Active ? "d-none" : "";
                 <div class="col d-flex flex-grow-0 flex-shrink-0">
                     <span class="position-absolute">
-                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
+                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
                     </span> 
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" />
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" />
                 </div>
             }
                 else if (settings.TrackerOnDeath == 3) //gray
             {
                 var gray = d.Active ? 0 : 100;
                 var gray2 = d.Active ? 100 : 65;
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
             }
                 else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
             {
                 if (d.Active)
                 {
-                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
                 }
             }
         }
@@ -225,29 +223,29 @@ else {
                 {
                     var opac = d.Active ? "1" : "0.3";
 
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
                 }
                 else if (settings.TrackerOnDeath == 2) //X
                 {
                     var hidden = d.Active ? "d-none" : "";
                     <div class="col d-flex flex-grow-0 flex-shrink-0">
                         <span class="position-absolute">
-                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
+                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
                         </span>
-                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" />
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" />
                     </div>
                 }
                 else if (settings.TrackerOnDeath == 3) //gray
                 {
                     var gray = d.Active ? 0 : 100;
                     var gray2 = d.Active ? 100 : 65;
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
                 }
                 else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
                 {
                     if (d.Active)
                     {
-                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
                     }
                 }
             }
@@ -267,29 +265,29 @@ else {
                 {
                     var opac = d.Active ? "1" : "0.3";
 
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
                 }
                 else if (settings.TrackerOnDeath == 2) //X
                 {
                     var hidden = d.Active ? "d-none" : "";
                     <div class="col d-flex flex-grow-0 flex-shrink-0">
                         <span class="position-absolute">
-                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
+                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
                         </span>
-                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" />
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" />
                     </div>
                 }
                 else if (settings.TrackerOnDeath == 3) //gray
                 {
                     var gray = d.Active ? 0 : 100;
                     var gray2 = d.Active ? 100 : 65;
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
                 }
                 else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
                 {
                     if (d.Active)
                     {
-                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
+                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
                     }
                 }
             }
@@ -309,29 +307,29 @@ else {
             {
                 var opac = d.Active ? "1" : "0.3"; 
                 
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
             }
             else if (settings.TrackerOnDeath == 2) //X
             {
                 var hidden = d.Active ? "d-none" : "";
                 <div class="col d-flex flex-grow-0 flex-shrink-0">
                     <span class="position-absolute">
-                       <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
+                       <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
                     </span> 
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;" />
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" />
                 </div>
             }
             else if (settings.TrackerOnDeath == 3) //gray
             {
                 var gray = d.Active ? 0 : 100;
                 var gray2 = d.Active ? 100 : 65;
-                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
             }
             else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
             {
                 if (d.Active)
                 {
-                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
                 }
             }
         }
@@ -488,6 +486,7 @@ Match scores only
         
         var deathCount = @Model.DeathWays!.Values.Where(d => !d.Active).Count();
         const TrackerOnDeath = @settings.TrackerOnDeath;
+        const me = "@Model.Id";
         var lastMove = 0;
 
         function copyOverlay(i) {
@@ -508,9 +507,10 @@ Match scores only
 
         }
 
-        function toggleDeath(t,i) {
+        function toggleDeath(t, i, forced) {
 
             lastMove = i;
+            
             let ele = document.getElementById("img-" + i);
             let undoDeath= false;
 
@@ -567,7 +567,7 @@ Match scores only
                     var img = new Image();
                     img.id="img-" + i;
                     img.src = "/img/50wtd/" + i + ".png";
-                    img.setAttribute("onclick", "toggleDeath('" + t + "'," + i + ")");
+                    img.setAttribute("onclick", "toggleDeath('" + t + "'," + i + ", 0)");
                     img.title="idk you deleted it";
                     img.style = "width:80px;display:inline;";
                     document.getElementById("dumpstuff").appendChild(img);
@@ -575,49 +575,58 @@ Match scores only
             }
             
  
+            
+            if(undoDeath) {
+                deathCount = deathCount-1;
+            } 
+            else {
+                deathCount = deathCount+1;
+            }
+
+            recalc();
+
+            if(forced == 1)
+                return;
+
             if(undoDeath) {
                 conn.invoke("NotifyUndo", {
                     trackerId: t,
                     deathId: parseInt(i)
                 });
-                deathCount = deathCount-1;
             } 
             else {
                 conn.invoke("NotifyDeath", {
                     trackerId: t,
                     deathId: parseInt(i)
                 });
-                deathCount = deathCount+1;
             }
-
-            recalc();
         }
 
         function sendRefresh() {
             conn.invoke("NotifyRefresh", { trackerId: "@Model.Id", deathId: parseInt(0) });
         }
 
-        function addRand(e) {
-            conn.invoke("NotifyRandom", { trackerId: "@Model.Id", player: e });
+        function Force(e) {
+            conn.invoke("ForceUndo", { trackerId: e, ForcedFrom: "@Model.Id" });
         }
+        
+
 
         function undoMove(t) {
             if (lastMove == 0)
                 return;
-            toggleDeath(t, lastMove);
+            toggleDeath(t, lastMove, 0);
         }
 
 
-        function initializeSignalRConnection (t) {
-            conn =  new signalR.HubConnectionBuilder()
+        function initializeSignalRConnection(t) {
+            var conn = new signalR.HubConnectionBuilder()
                 .withUrl("/trackerhub?tracker=" + t)
                 .withAutomaticReconnect()
                 .build();
 
-  
-    
             try {
-               conn.start();
+                conn.start();
             } catch (err) {
                 console.log(err);
             }
@@ -632,19 +641,11 @@ Match scores only
 
             return conn;
         }
-
-
+        
+        const conn = initializeSignalRConnection("@Model.Id");
         //On page load
         recalc();
-        var conn = 0;
-        initializeSignalRConnection("@Model.Id");
 
-
-        
-        conn.on("ReceiveRand", ({deathId}) => {
-            toggleDeath("@Model.Id", deathId); 
-            //temporary pop up saying what was re-added?
-        });
 
 
         //console is telling me conn.start isn't asynch even though the doc says it is so whatever we will hack it.
@@ -653,7 +654,34 @@ Match scores only
         }
 
         delay(500).then(() => sendRefresh());
-        
+
+        conn.on("ReceiveUndo", ({ trackerId, deathId, deathCount, forcedFrom }) => {
+            //if from is filled in it was forced, otherwise ignore as we are the one who clicked it
+            if(forcedFrom)
+                toggleDeath(trackerId, deathId, 1);
+        });
+
+        conn.on("ForceComplete", ({ trackerId, deathId, deathCount, forcedFrom }) => {
+            
+            msg="";
+            ele = document.getElementById("img-" + deathId);
+            ele2 = document.getElementById("force-warning");
+
+            if(trackerId == me) {
+                msg = forcedFrom + " reset " + ele.title + " for you. Bummer.";
+            } 
+            else {
+                msg = forcedFrom + " reset " + ele.title + " for " + trackerId;
+            }
+            
+            ele2.innerHTML  = msg;
+
+            ele2.classList.remove("d-none");
+
+            $("#force-warning").css('opacity', '1');;
+            $("#force-warning").delay(10000).fadeTo(200, 0); 
+            
+        });
 
     </script>
 }
