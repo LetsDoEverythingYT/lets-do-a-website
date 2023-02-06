@@ -175,35 +175,41 @@ else {
         @foreach (var d in Model.DeathWays!.Values)
         {
             
-            if (d.Category != "Enemy") continue;
+            if (d.Category != "Enemy") 
+                continue;
 
-                if (settings.TrackerOnDeath == 1) //fade
+            if (settings.TrackerOnDeath == 1) //fade
             {
                 var opac = d.Active ? "1" : "0.3"; 
                 
                 <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;opacity:@opac">
             }
-                else if (settings.TrackerOnDeath == 2) //X
+            else if (settings.TrackerOnDeath == 2) //X
             {
                 var hidden = d.Active ? "d-none" : "";
                 <div class="col d-flex flex-grow-0 flex-shrink-0">
                     <span class="position-absolute">
-                            <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
+                        <img id="noimg-@d.Id" src="~/img/50wtd/no.png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" class="@hidden" />
                     </span> 
                     <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;" />
                 </div>
             }
-                else if (settings.TrackerOnDeath == 3) //gray
+            else if (settings.TrackerOnDeath == 3) //gray
             {
                 var gray = d.Active ? 0 : 100;
                 var gray2 = d.Active ? 100 : 65;
                 <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
             }
-                else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
+            else if (settings.TrackerOnDeath == 4) //delete
+            {
+                var vis = d.Active ? "visible" : "hidden";
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:@vis">
+            }
+            else if (settings.TrackerOnDeath == 5) //delete
             {
                 if (d.Active)
                 {
-                        <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:visible">
                 }
             }
         }
@@ -241,7 +247,12 @@ else {
                     var gray2 = d.Active ? 100 : 65;
                     <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
                 }
-                else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
+                else if (settings.TrackerOnDeath == 4) //delete
+                {
+                    var vis = d.Active ? "visible" : "hidden";
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:@vis">
+                }
+                else if (settings.TrackerOnDeath == 5) //delete
                 {
                     if (d.Active)
                     {
@@ -283,7 +294,12 @@ else {
                     var gray2 = d.Active ? 100 : 65;
                     <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
                 }
-                else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
+                else if (settings.TrackerOnDeath == 4) //delete
+                {
+                    var vis = d.Active ? "visible" : "hidden";
+                    <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:@vis">
+                }
+                else if (settings.TrackerOnDeath == 5) //delete
                 {
                     if (d.Active)
                     {
@@ -325,7 +341,12 @@ else {
                 var gray2 = d.Active ? 100 : 65;
                 <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;filter:grayscale(@gray) brightness(@(gray2)%)">
             }
-            else if (settings.TrackerOnDeath == 4 || settings.TrackerOnDeath == 5) //delete
+            else if (settings.TrackerOnDeath == 4) //delete
+            {
+                var vis = d.Active ? "visible" : "hidden";
+                <img id="img-@d.Id" src="~/img/50wtd/@(d.Id).png" onclick="toggleDeath('@Model.Id', @d.Id, 0)" title="@d.Name" width="80" style="width:80px;display:inline;visibility:@vis">
+            }
+            else if (settings.TrackerOnDeath == 5) //delete
             {
                 if (d.Active)
                 {
