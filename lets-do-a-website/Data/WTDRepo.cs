@@ -199,9 +199,11 @@ namespace lets_do_a_website.Data
         }
 
 
-        public void AddRunStats(RunStats stat)
+        public void SaveRun(Tracker tracker)
         {
-            _ctx.RunStats.Add(stat);
+            var rs = new RunStats(tracker.Id, tracker.FirstUsed, tracker.LastUsed, tracker.DeathCount(), tracker.DataBits);
+
+            _ctx.RunStats.Add(rs);
         }
         public bool SaveAll()
         {

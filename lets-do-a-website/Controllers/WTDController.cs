@@ -88,15 +88,16 @@ namespace lets_do_a_website.Controllers
                     return RedirectToAction("Index");
             }
 
-
-            var rs = new RunStats(id, DateTime.UtcNow, _repo.GetTracker(id, false).DataBits);
-            
-            _repo.AddRunStats(rs);
+            //save partial run. full runs are saved at 50 in the hub
+            var t = _repo.GetTracker(id);
+            var deaths = t.DeathCount();
+            if(deaths > 10 && deaths < 50) {
+                _repo.SaveRun(t);
+            }
 
             _repo.RemoveTracker(id);
             _repo.AddTracker(id);
             _repo.SaveAll();
-
 
             return RedirectToAction("Tracker", new { id });
         }
@@ -106,7 +107,7 @@ namespace lets_do_a_website.Controllers
         {
             if (id != null)
             {
-                _repo.AddPermission(new Permissions { Streamer = User.Identity!.Name!, Mod = id.ToLower() });
+                _repo.AddPermission(new Permissions { Streamer = User.Identity!.Name!, Mod = id.ToLower().Trim() });
                 _repo.SaveAll();
             }
             return RedirectToAction("Index");
@@ -160,8 +161,8 @@ namespace lets_do_a_website.Controllers
             if (hostStreamer is null || guestStreamer is null)
                 return RedirectToAction("Index");
 
-            hostStreamer = hostStreamer.ToLower();
-            guestStreamer = guestStreamer.ToLower();
+            hostStreamer = hostStreamer.ToLower().Trim();
+            guestStreamer = guestStreamer.ToLower().Trim();
 
             var settings = _repo.GetUserSettings(hostStreamer);
 
@@ -244,7 +245,7 @@ namespace lets_do_a_website.Controllers
             if (guestStreamer is null)
                 return RedirectToAction("Index");
 
-            guestStreamer = guestStreamer.ToLower();
+            guestStreamer = guestStreamer.ToLower().Trim();
 
             var invite = _repo.GetInviteByMatchId(matchId, guestStreamer);
 
@@ -279,7 +280,7 @@ namespace lets_do_a_website.Controllers
             if (guestStreamer is null)
                 return RedirectToAction("Index");
 
-            guestStreamer = guestStreamer.ToLower();
+            guestStreamer = guestStreamer.ToLower().Trim();
 
             var invite = _repo.GetInviteByMatchId(matchId, guestStreamer);
 

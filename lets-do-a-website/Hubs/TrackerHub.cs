@@ -23,6 +23,10 @@ namespace lets_do_a_website.Hubs
             tracker.addDeath(notification.DeathId);
             notification.DeathCount = tracker.DeathCount();
 
+            if(notification.DeathCount == 50) {
+                _repo.SaveRun(tracker);
+            }
+
             _repo.SaveAll();
 
             await Clients.OthersInGroup($"tracker-{notification.TrackerId}").SendAsync("ReceiveNewDeath", notification);

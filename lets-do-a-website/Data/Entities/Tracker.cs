@@ -9,6 +9,7 @@ namespace lets_do_a_website.Data.Entities
         [Key]
         public int key { get; set; }
         public string Id { get; set; } = "default";
+        public DateTime FirstUsed { get; set; }
         public DateTime LastUsed { get; set; }
 
         public string DataBits { get; set; } = "";
@@ -21,6 +22,7 @@ namespace lets_do_a_website.Data.Entities
         public Tracker(Tracker orig) 
         {
             Id = orig.Id;
+            FirstUsed = DateTime.UtcNow;
             LastUsed = DateTime.UtcNow;
             DataBits = orig.DataBits;
         
@@ -45,6 +47,8 @@ namespace lets_do_a_website.Data.Entities
             ch[id] = '0';
             DataBits = new string(ch);
             LastUsed = DateTime.UtcNow;
+            if(DeathCount() == 1)
+                FirstUsed= DateTime.UtcNow;
         }
 
         public void removeDeath(int id)
