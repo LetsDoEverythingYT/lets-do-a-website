@@ -15,10 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-var dbConnection = Environment.GetEnvironmentVariable("CLEARDB_DATABASE_URL");
+var dbConnection = Environment.GetEnvironmentVariable("JAWSDB_MARIA_URL");
 if (dbConnection == null)
 {
-    dbConnection = builder.Configuration["CLEARDB_DATABASE_URL"];
+    dbConnection = builder.Configuration["JAWSDB_MARIA_URL"];
 }
 var serverVersion = ServerVersion.AutoDetect(dbConnection);
 

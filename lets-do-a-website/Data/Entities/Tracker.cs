@@ -1,4 +1,4 @@
-﻿using lets_do_a_website.Migrations;
+﻿//using lets_do_a_website.Migrations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

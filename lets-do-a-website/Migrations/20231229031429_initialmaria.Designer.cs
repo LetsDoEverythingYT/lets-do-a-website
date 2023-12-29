@@ -11,8 +11,8 @@ using lets_do_a_website.Data;
 namespace lets_do_a_website.Migrations
 {
     [DbContext(typeof(WTDContext))]
-    [Migration("20230202034230_trackerdb")]
-    partial class trackerdb
+    [Migration("20231229031429_initialmaria")]
+    partial class initialmaria
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -110,16 +110,22 @@ namespace lets_do_a_website.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("DeathCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("Deaths")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Streamer")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Submitted")
-                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -135,6 +141,9 @@ namespace lets_do_a_website.Migrations
                     b.Property<string>("DataBits")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("FirstUsed")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Id")
                         .IsRequired()
