@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\img\redmans\book1\" />
+    <Folder Include="wwwroot\img\redmans\book2\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
   </ItemGroup>
 
