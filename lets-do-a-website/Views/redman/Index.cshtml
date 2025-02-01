@@ -1,19 +1,20 @@
 ﻿@{
-    var id = (int)ViewData["bookId"]; 
+    var id = (int)ViewData["bookId"];
 }
 
 <br />
 <div class="container">
     <div class="row">
-        <div class="col-3">
+        <div class="col-2">
         </div>
-        <div class="col-7">
+        <div class="col-8">
 
             <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="redman" asp-action="Index" asp-route-id="1">Book 1: Spikeballs</a>
             <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="redman" asp-action="Index" asp-route-id="2">Book 2: Meatballs</a>
             <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="redman" asp-action="Index" asp-route-id="3">Book 3: Bouncyballs</a>
+            <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="redman" asp-action="Index" asp-route-id="4">Book 4: Timeballs</a>
         </div>
-    
+
     </div>
     <hr />
     @if (id == 1)
@@ -39,13 +40,13 @@
         </div>
         <div class="row">
             <div class="col-6">
-                
+
             </div>
             <div class="col-6">
                 <img class="img-fluid" src="~/img/redmans/book1/rd06.jpg" />
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-6">
                 <img class="img-fluid" src="~/img/redmans/book1/rd08.jpg" />
@@ -56,7 +57,7 @@
         </div>
         <div class="row">
             <div class="col-6">
-                
+
             </div>
             <div class="col-6">
                 <img class="img-fluid" src="~/img/redmans/book1/rd09.jpg" />
@@ -64,7 +65,7 @@
         </div>
         <div class="row">
             <div class="col-6">
-                
+
             </div>
             <div class="col-6">
                 <img class="img-fluid" src="~/img/redmans/book1/rd10.jpg" />
@@ -133,7 +134,7 @@
         </div>
         <div class="row">
             <div class="col-6">
-                
+
             </div>
             <div class="col-6">
                 <img class="img-fluid" src="~/img/redmans/book2/repr_00001.jpg" />
@@ -251,22 +252,42 @@
                 <img class="img-fluid" src="~/img/redmans/book2/repr_00030.jpg" />
             </div>
         </div>
-
-    } else
+    }
+    else if (id == 3)
+    {
+        <div>
+            He turned 8. Book inspired by the movies Dodgeball and Spacejam. <br />
+            <a href="https://youtu.be/f88TBxbhUl8">Here is a video of the design process</a>
+        </div>
+        
+        for( int i = 0; i < 55; i++)
+        {
+            <div class="row">
+                <div class="col-6">
+                    <img class="img-fluid" src="~/img/redmans/book3/r3p@(i).jpg" />
+                </div>
+            @{ i++; }
+                <div class="col-6">
+                    <img class="img-fluid" src="~/img/redmans/book3/r3p@(i).jpg" />
+                </div>
+            </div>
+        }
+    }
+    else
     {
         <div class="row"> I aint write it yet.</div>
     }
 
     <div class="row">
-        <div class="col-3">
+        <div class="col-2">
         </div>
-        <div class="col-7">
+        <div class="col-8">
 
             <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="redman" asp-action="Index" asp-route-id="1">Book 1: Spikeballs</a>
             <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="redman" asp-action="Index" asp-route-id="2">Book 2: Meatballs</a>
             <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="redman" asp-action="Index" asp-route-id="3">Book 3: Bouncyballs</a>
+            <a class="btn btn-outline-dark btn-lg btn-block" asp-controller="redman" asp-action="Index" asp-route-id="4">Book 4: Timeballs</a>
         </div>
-
     </div>
 
 </div>
